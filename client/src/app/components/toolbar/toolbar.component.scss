@@ -1,0 +1,134 @@
+@use 'sass:color';
+/* ── Color Palette from Image ── */
+$color-panel-bg: #ae4924; /* Terracotta orange-brown */
+$color-panel-light: #f7a36b; /* Light highlight at the top */
+$color-border-dark: #2d1610; /* Deep brown border */
+$color-inner-bg: #f1ddbe; /* Cream background for buttons/inputs */
+$color-text-dark: #2d1610; /* Dark text for inside cream areas */
+$color-accent: #5a3a18; /* Medium brown for separators */
+
+/* ── Outer container ── */
+.toolbar-container {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    z-index: 1000;
+    font-family: 'Retro', 'Courier New', monospace; /* Ensure pixel font matches image */
+}
+
+/* ── The Panel (Matches the brown book/box) ── */
+%panel-base {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 8px;
+    padding: 12px 8px;
+    box-sizing: border-box;
+    width: 72px;
+
+    background-color: $color-panel-bg;
+
+    /* Pixel-art border: Top highlight + Dark outer frame */
+    border: 4px solid $color-border-dark;
+    box-shadow:
+        inset 0 6px 0 $color-panel-light,
+        /* The bright strip at the top of the image */ 4px 4px 0 rgba(0, 0, 0, 0.3); /* Hard drop shadow */
+
+    image-rendering: pixelated;
+}
+
+.toolbar {
+    @extend %panel-base;
+}
+.secondary-toolbar {
+    @extend %panel-base;
+    margin-left: 4px;
+}
+
+/* ── Buttons (Styled like the cream input fields in the image) ── */
+.toolbar-button,
+.tile-option,
+.item-option {
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    background-color: $color-inner-bg;
+    border: 2px solid $color-border-dark;
+    border-radius: 2px;
+
+    padding: 4px;
+    cursor: pointer;
+    width: 44px;
+    height: 44px;
+    transition: transform 0.1s;
+
+    &:hover {
+        transform: scale(1.05);
+        /* 2. Replace lighten($color, 5%) with color.adjust($color, $lightness: 5%) */
+        background-color: color.adjust($color-inner-bg, $lightness: 5%);
+    }
+
+    &:active {
+        transform: scale(0.95);
+        /* 3. Replace darken($color, 10%) with color.adjust($color, $lightness: -10%) */
+        background-color: color.adjust($color-inner-bg, $lightness: -10%);
+    }
+
+    img {
+        width: 32px;
+        height: 32px;
+        object-fit: contain;
+    }
+}
+/* ── Selection Indicator ── */
+.tile-option.selected {
+    outline: 3px solid #fff;
+    outline-offset: -5px;
+    background-color: #fff;
+}
+
+/* ── Separator (Flat dark line) ── */
+.toolbar-separator {
+    width: 80%;
+    height: 3px;
+    background-color: $color-border-dark;
+    margin: 4px 0;
+    opacity: 0.6;
+}
+
+/* ── Tooltip (Matches the terracotta theme) ── */
+.tooltip {
+    position: absolute;
+    left: 120%;
+    top: 50%;
+    transform: translateY(-50%);
+    background: $color-border-dark;
+    color: $color-inner-bg;
+    padding: 6px 10px;
+    border: 2px solid $color-panel-light;
+    font-size: 12px;
+    white-space: nowrap;
+    z-index: 20;
+    pointer-events: none;
+    box-shadow: 3px 3px 0 rgba(0, 0, 0, 0.4);
+}
+
+/* ── Count Badges ── */
+.count {
+    position: absolute;
+    bottom: -2px;
+    right: 2px;
+    font-size: 14px;
+    color: $color-text-dark;
+    font-weight: bold;
+    /* No shadow here to keep it looking like the image's "2" */
+}
+
+/* ── Disabled State ── */
+.disabled {
+    filter: grayscale(100%) contrast(0.5);
+    opacity: 0.7;
+    cursor: not-allowed;
+}

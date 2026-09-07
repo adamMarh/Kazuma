@@ -1,0 +1,7 @@
+<div class="popup-container">
+    <div class="popup-header">
+        <span class="popup-title">{{ 'chatroom.chatTitle' | translate }}</span>
+        <button class="anchor-btn" (click)="anchor()">{{ 'chatroom.anchor' | translate }}</button>
+    </div>
+    <app-chatroom [gameId]="gameId" [isPopup]="true"></app-chatroom>
+</div>

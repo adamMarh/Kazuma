@@ -1,0 +1,15 @@
+<div class="overlay" (click)="decline()">
+    <div class="dialog" (click)="$event.stopPropagation()">
+        <div class="dialog-icon">⚔️</div>
+        <h3>{{ 'gameInvitation.title' | translate }}</h3>
+        <p class="invitation-text">
+            <strong>{{ invitation.fromUsername }}</strong> {{ 'gameInvitation.inviteMessage' | translate }}
+            <strong>{{ invitation.gameId }}</strong>
+        </p>
+        <div class="countdown">{{ countdown }}s</div>
+        <div class="actions">
+            <button class="accept-btn" (click)="accept()">{{ 'gameInvitation.accept' | translate }}</button>
+            <button class="decline-btn" (click)="decline()">{{ 'gameInvitation.decline' | translate }}</button>
+        </div>
+    </div>
+</div>

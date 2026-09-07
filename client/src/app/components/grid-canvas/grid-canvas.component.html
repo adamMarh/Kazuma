@@ -1,0 +1,52 @@
+<div #gridContainer class="grid-container" [style.width.px]="gridContainerSize" [style.height.px]="gridContainerSize">
+    @for (row of grid; track $index; let y = $index) {
+    <div class="grid-row">
+        @for (tile of row; track tile + '-' + $index; let x = $index) {
+        <div
+            class="grid-cell"
+            [style.width.px]="tileSize"
+            [style.height.px]="tileSize"
+            [style.background-image]="tileSettings[tile] ? 'url(' + tileSettings[tile].image + ')' : ''"
+            (mousedown)="onCellMouseDown($event, x, y)"
+            (mouseenter)="onCellMouseEnter(x, y)"
+            (contextmenu)="$event.preventDefault()"
+            (dragover)="onDragOver($event)"
+            (drop)="onDrop($event, x, y)"
+        >
+            @if (isPossibleMovement(x, y)) {
+            <div class="possible-movement-dot"></div>
+            @if (isPossiblePath(x, y)) {
+            <div class="possible-path-dot"></div>
+            } } @if (showPlayers) { @for (player of players; track player.socketId) { @if (player.position.x === x && player.position.y === y &&
+            !player.isEliminated) {
+            <img
+                [src]="'./assets/images/avatars-images/avatar' + player.avatar + '.png'"
+                [style.width.px]="tileSize"
+                [style.height.px]="tileSize"
+                [alt]="player.name"
+                class="player-icon"
+                (click)="attackPlayer.emit({ playerId: player.socketId })"
+            />
+            } } } @if (items[y][x] && items[y][x] !== 'empty' && items[y][x] !== 'hidden_checkpoint') {
+            <img
+                [src]="itemSettings[items[y][x]].image"
+                [alt]="items[y][x]"
+                class="item-overlay grid-item"
+                draggable="true"
+                (mousedown)="onItemMouseDown($event)"
+                (dragstart)="onGridItemDragStart($event, items[y][x], x, y)"
+                (contextmenu)="onDeleteItem($event, x, y)"
+                (mouseenter)="showItemTooltip(items[y][x], $event)"
+                (mouseleave)="hideItemTooltip()"
+            />
+            }
+        </div>
+        }
+    </div>
+    } @if (hoveredItem) {
+    <div class="item-map-tooltip" [style.left.px]="tooltipPosition.x" [style.top.px]="tooltipPosition.y">
+        <p class="tooltip-name">{{ hoveredItem }}</p>
+        <p class="tooltip-description">{{ 'items.' + hoveredItem | translate }}</p>
+    </div>
+    }
+</div>

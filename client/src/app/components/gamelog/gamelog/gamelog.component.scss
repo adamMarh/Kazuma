@@ -1,0 +1,78 @@
+.gamelog-container {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    max-width: 450px;
+    border: 4px solid #3e1d0f;
+    background-color: #1e1007;
+    padding: 10px;
+    box-shadow: 4px 4px 0 #000;
+    color: #fefae0;
+    height: 300px;
+    overflow: hidden;
+}
+
+.filter-controls {
+    padding: 8px;
+    background-color: #3e1d0f;
+    border-bottom: 2px solid #1a0f08;
+    text-align: right;
+}
+
+.filter-controls button {
+    padding: 4px 12px;
+    font-size: 12px;
+    border: 2px solid #533012;
+    border-radius: 2px;
+    background-color: #d6812c;
+    color: #fff;
+    cursor: pointer;
+    font-weight: bold;
+    transition: background-color 0.2s ease;
+}
+
+.filter-controls button:hover {
+    background-color: #f49c3f;
+}
+
+.log-messages {
+    flex: 1;
+    padding: 10px;
+    overflow-y: auto;
+    background: linear-gradient(to bottom, #fcebd1, #f4cf98);
+    border: 2px inset #c0a070;
+    color: #3b2b1d;
+    font-size: 12px;
+    overflow-y: auto;
+    max-height: 220px;
+    scroll-behavior: smooth;
+}
+
+.log-entry {
+    margin-bottom: 8px;
+    padding: 6px 10px;
+    border-radius: 3px;
+    background-color: #fff7e4;
+    border: 2px solid #c9a871;
+    box-shadow: 2px 2px 0 #9b7d55;
+    transition: background-color 0.2s ease;
+}
+
+.log-entry:hover {
+    background-color: #f5e0ba;
+}
+
+.timestamp {
+    font-weight: bold;
+    color: #7a4a1e;
+    margin-right: 6px;
+}
+
+.message {
+    color: #3b2b1d;
+}
+
+.players {
+    color: #996f44;
+    font-style: italic;
+}

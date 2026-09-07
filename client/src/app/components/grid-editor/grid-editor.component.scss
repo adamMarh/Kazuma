@@ -1,0 +1,194 @@
+.editor-container {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    gap: 2rem;
+    height: 100vh;
+    align-items: center;
+    background-image: url('../../../assets/images/home-pagev4.png');
+    background-size: contain;
+}
+
+.loading {
+    position: absolute;
+    top: 5%;
+    left: 32%;
+    color: white;
+    text-align: center;
+    font-size: 2rem;
+    margin-top: 2rem;
+    font-family: 'Retro', sans-serif;
+}
+
+.toolbar-wrapper {
+    position: absolute;
+    left: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    max-width: 100px;
+}
+
+.grid-wrapper {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    max-width: 800px;
+    margin-right: 2rem;
+}
+
+.controls {
+    position: absolute;
+    right: 10px;
+    top: 50%;
+    transform: translateY(-50%);
+    background-image: url('../../../assets/HUD/brown-box.png');
+    background-size: cover;
+    padding: 2rem;
+    width: 350px;
+    box-sizing: border-box;
+}
+
+.game-info {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.form-group {
+    display: flex;
+    flex-direction: column;
+    gap: 0.5rem;
+}
+
+.name-error {
+    color: rgb(150, 10, 10);
+    font-weight: 600;
+}
+
+label {
+    font-weight: bold;
+    font-family: 'Retro', sans-serif;
+}
+
+input,
+textarea {
+    font-family: 'Retro', sans-serif;
+    padding: 0.5rem;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 1rem;
+    width: 100%;
+    background-color: rgb(241, 221, 190);
+}
+
+textarea {
+    background-color: rgb(241, 221, 190);
+    resize: none;
+    min-height: 100px;
+}
+
+body {
+    overflow: hidden;
+}
+
+.generator-panel {
+    position: absolute;
+    left: 50%;
+    top: 8%;
+    transform: translateX(-50%);
+    background-image: url('../../../assets/HUD/brown-box.png');
+    background-size: cover;
+    padding: 1.5rem 2rem;
+    width: 380px;
+    box-sizing: border-box;
+    z-index: 2000;
+    border-radius: 8px;
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5);
+
+    h3 {
+        font-family: 'Retro', sans-serif;
+        text-align: center;
+        margin: 0 0 0.8rem 0;
+        font-size: 1.1rem;
+        color: #3a2a14;
+    }
+
+    .generator-info {
+        display: flex;
+        justify-content: space-between;
+        font-family: 'Retro', sans-serif;
+        font-size: 0.85rem;
+        color: #5a3e1b;
+        margin-bottom: 1rem;
+        padding: 0.4rem 0.6rem;
+        background-color: rgba(241, 221, 190, 0.6);
+        border-radius: 4px;
+    }
+
+    .generator-option {
+        display: flex;
+        align-items: center;
+        gap: 0.6rem;
+        margin-bottom: 0.8rem;
+
+        label {
+            font-family: 'Retro', sans-serif;
+            font-size: 0.85rem;
+            min-width: 70px;
+            font-weight: bold;
+        }
+
+        input[type='range'] {
+            flex: 1;
+            padding: 0;
+            height: auto;
+            background: transparent;
+            cursor: pointer;
+        }
+
+        .pct-value {
+            font-family: 'Retro', sans-serif;
+            font-size: 0.85rem;
+            min-width: 35px;
+            text-align: right;
+            color: #3a2a14;
+            font-weight: bold;
+        }
+    }
+
+    .generator-actions {
+        display: flex;
+        gap: 0.8rem;
+        margin-top: 1rem;
+        justify-content: center;
+    }
+
+    .gen-button {
+        font-family: 'Retro', sans-serif;
+        padding: 0.5rem 1.2rem;
+        border: 2px solid #5a3e1b;
+        border-radius: 6px;
+        background-color: rgba(241, 221, 190, 0.9);
+        color: #3a2a14;
+        font-weight: bold;
+        font-size: 0.9rem;
+        cursor: pointer;
+        transition: all 0.2s;
+
+        &:hover:not(:disabled) {
+            background-color: #c4a56c;
+            transform: scale(1.05);
+        }
+
+        &:disabled {
+            opacity: 0.5;
+            cursor: not-allowed;
+        }
+
+        &.gen-cancel {
+            background-color: rgba(180, 140, 100, 0.7);
+            border-color: #8a6a3b;
+        }
+    }
+}

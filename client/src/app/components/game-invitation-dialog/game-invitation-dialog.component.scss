@@ -1,0 +1,91 @@
+.overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.dialog {
+    background: #1a1a2e;
+    border-radius: 16px;
+    padding: 32px 28px;
+    max-width: 400px;
+    width: 90%;
+    text-align: center;
+    border: 1px solid rgba(52, 152, 219, 0.4);
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.5);
+}
+
+.dialog-icon {
+    font-size: 40px;
+    margin-bottom: 12px;
+}
+
+h3 {
+    color: #e6ffe6;
+    margin: 0 0 16px;
+    font-size: 20px;
+    font-weight: 700;
+}
+
+.invitation-text {
+    color: rgba(230, 255, 230, 0.8);
+    font-size: 14px;
+    margin: 0 0 16px;
+    line-height: 1.5;
+
+    strong {
+        color: #e6ffe6;
+    }
+}
+
+.countdown {
+    color: #ffc107;
+    font-size: 24px;
+    font-weight: 700;
+    margin-bottom: 20px;
+}
+
+.actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+}
+
+.accept-btn {
+    background: rgba(38, 168, 90, 0.2);
+    color: #26a85a;
+    border: 1px solid rgba(38, 168, 90, 0.4);
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(38, 168, 90, 0.35);
+    }
+}
+
+.decline-btn {
+    background: rgba(231, 76, 60, 0.2);
+    color: #e74c3c;
+    border: 1px solid rgba(231, 76, 60, 0.4);
+    padding: 10px 28px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    cursor: pointer;
+    transition: all 0.2s ease;
+
+    &:hover {
+        background: rgba(231, 76, 60, 0.35);
+    }
+}

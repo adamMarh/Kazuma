@@ -1,0 +1,52 @@
+.qr-code-container {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: 12px;
+    background-color: #1e1007;
+    border: 2px inset #1a0f08;
+    border-radius: 4px;
+    width: 100%;
+}
+
+.qr-text {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    flex: 1;
+    margin-right: 12px;
+}
+
+.qr-label {
+    color: #ffdeab;
+    font-size: 1.1rem;
+    margin: 0 0 4px 0;
+    text-shadow: 1px 1px #000;
+    font-weight: bold;
+}
+
+.qr-desc {
+    color: rgba(255, 255, 255, 0.6);
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.qr-error {
+    color: #ff4d4f;
+    font-size: 0.85rem;
+    margin: 0;
+}
+
+.qr-canvas-wrapper {
+    background-color: #ffdeab;
+    padding: 4px;
+    border-radius: 4px;
+    display: flex;
+}
+
+canvas {
+    border-radius: 2px;
+    width: 100px !important;
+    height: 100px !important;
+}

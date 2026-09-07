@@ -1,0 +1,40 @@
+.language-selector {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.lang-label {
+    font-size: 13px;
+    color: rgba(255, 255, 255, 0.7);
+    font-weight: 500;
+    white-space: nowrap;
+}
+
+.lang-select {
+    padding: 6px 10px;
+    border-radius: 6px;
+    border: 1px solid rgba(35, 140, 60, 0.5);
+    background-color: rgba(0, 0, 0, 0.3);
+    color: white;
+    font-size: 13px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+    font-family: inherit;
+}
+
+.lang-select:hover {
+    background-color: rgba(0, 0, 0, 0.4);
+    border-color: rgba(35, 140, 60, 0.7);
+}
+
+.lang-select:focus {
+    outline: none;
+    border-color: #238c3c;
+    box-shadow: 0 0 4px rgba(35, 140, 60, 0.3);
+}
+
+.lang-select option {
+    background-color: #1a1a1a;
+    color: white;
+}

@@ -1,0 +1,124 @@
+<div class="auth-container">
+    <div class="language-toggle">
+        <app-language-selector></app-language-selector>
+    </div>
+    <div class="auth-card">
+        <h1>{{ isLoginMode ? ('auth.login' | translate) : ('auth.signup' | translate) }}</h1>
+
+        @if (errorMessage) {
+        <div class="error-message">
+            {{ errorMessage }}
+        </div>
+        }
+
+        <form [formGroup]="authForm" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label for="email">{{ isLoginMode ? ('auth.emailOrUsername' | translate) : ('auth.email' | translate) }}</label>
+                <input
+                    type="text"
+                    id="courriel"
+                    formControlName="email"
+                    [placeholder]="isLoginMode ? ('auth.enterEmailOrUsername' | translate) : ('auth.enterEmail' | translate)"
+                />
+                @if (email?.invalid && email?.touched) {
+                <span class="field-error">
+                    @if (email?.errors?.['required']) {
+                    {{ isLoginMode ? ('auth.identifierRequired' | translate) : ('auth.emailRequired' | translate) }} } @if (!isLoginMode &&
+                    email?.errors?.['email']) { {{ 'auth.emailInvalid' | translate }} }
+                </span>
+                }
+            </div>
+
+            @if (!isLoginMode) {
+            <div class="form-group">
+                <label for="username">{{ 'auth.username' | translate }}</label>
+                <input type="text" id="username" formControlName="username" maxlength="12" [placeholder]="'auth.enterUsername' | translate" />
+
+                @if (username?.invalid && username?.touched) {
+                <span class="field-error">
+                    @if (username?.errors?.['required']) { {{ 'auth.usernameRequired' | translate }} } @if (username?.errors?.['minlength']) {
+                    {{ 'auth.usernameMinLength' | translate }} } @if (username?.errors?.['maxlength']) { {{ 'auth.usernameMaxLength' | translate }} }
+                </span>
+                }
+            </div>
+            }
+
+            <div class="form-group">
+                <label for="password">{{ 'auth.password' | translate }}</label>
+                <input type="password" id="password" formControlName="password" [placeholder]="'auth.enterPassword' | translate" />
+                @if (password?.invalid && password?.touched) {
+                <span class="field-error">
+                    @if (password?.errors?.['required']) { {{ 'auth.passwordRequired' | translate }} } @if (password?.errors?.['minlength']) {
+                    {{ 'auth.passwordMinLength' | translate }} }
+                </span>
+                }
+            </div>
+
+            @if (!isLoginMode) {
+            <div class="form-group">
+                <label for="confirmPassword">{{ 'auth.confirmPassword' | translate }}</label>
+                <input
+                    type="password"
+                    id="confirmPassword"
+                    formControlName="confirmPassword"
+                    [placeholder]="'auth.confirmPasswordPlaceholder' | translate"
+                />
+                @if ((confirmPassword?.invalid && confirmPassword?.touched) || (authForm.errors?.['passwordMismatch'] && confirmPassword?.touched)) {
+                <span class="field-error">
+                    @if (confirmPassword?.errors?.['required']) { {{ 'auth.passwordConfirmRequired' | translate }} } @if
+                    (authForm.errors?.['passwordMismatch']) { {{ 'auth.passwordMismatch' | translate }} }
+                </span>
+                }
+            </div>
+            @if (!isLoginMode) {
+            <div class="form-group">
+                <label>{{ 'auth.chooseAvatar' | translate }}</label>
+
+                <div class="avatar-upload-container">
+                    <div class="upload-wrapper">
+                        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none" />
+                        <button type="button" class="upload-btn" (click)="fileInput.click()" [disabled]="uploadingAvatar">
+                            {{ uploadingAvatar ? ('settings.uploading' | translate) : ('settings.uploadAvatar' | translate) }}
+                        </button>
+                    </div>
+                    @if (uploadError) {
+                    <p class="upload-error">{{ uploadError }}</p>
+                    }
+                </div>
+
+                <div class="avatar-grid">
+                    @for (avatar of avatars; track avatar.id) {
+                    <div class="avatar-item" [class.custom]="avatar.id === '__pending__'">
+                        <img
+                            [src]="'data:image/jpeg;base64,' + avatar.imageBase64"
+                            [class.selected]="selectedAvatarId === avatar.id"
+                            (click)="selectAvatar(avatar.id)"
+                        />
+                        @if (avatar.id === '__pending__') {
+                        <span class="custom-badge">{{ 'settings.personalBadge' | translate }}</span>
+                        }
+                    </div>
+                    }
+                </div>
+            </div>
+            } }
+
+            <button type="submit" [disabled]="authForm.invalid || isLoading" class="submit-btn">
+                @if (isLoading) {
+                <span class="spinner"></span>
+                {{ 'auth.loading' | translate }} } @else {
+                {{ isLoginMode ? ('auth.signIn' | translate) : ('auth.signUp' | translate) }}
+                }
+            </button>
+        </form>
+
+        <div class="toggle-mode">
+            <p>
+                {{ isLoginMode ? ('auth.dontHaveAccount' | translate) : ('auth.alreadyHaveAccount' | translate) }}
+                <button type="button" class="toggle-btn" (click)="toggleMode()">
+                    {{ isLoginMode ? ('auth.createAccount' | translate) : ('auth.signIn' | translate) }}
+                </button>
+            </p>
+        </div>
+    </div>
+</div>

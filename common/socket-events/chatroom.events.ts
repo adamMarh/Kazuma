@@ -1,0 +1,17 @@
+export const CHAT_EVENTS = {
+    REGISTER_USER: 'chat:register-user',
+    JOIN_ROOM: 'chat:join-room',
+    LEAVE_ROOM: 'chat:leave-room',
+    SEND_MESSAGE: 'chat:send-message',
+    RECEIVE_MESSAGE: 'chat:receive-message',
+    GET_HISTORY: 'chat:get-history',
+    HISTORY_RECEIVED: 'chat:history-received',
+    GET_ROOMS: 'chat:get-rooms',
+    ROOMS_RECEIVED: 'chat:rooms-received',
+    SEARCH_ROOMS: 'chat:search-rooms',
+    CREATE_ROOM: 'chat:create-room',
+    DELETE_ROOM: 'chat:delete-room',
+    DELETE_GAME_MESSAGES: 'chat:delete-game-messages',
+    ROOM_DELETED: 'chat:room-deleted',
+    ROOM_CREATED: 'chat:room-created',
+} as const;

@@ -1,0 +1,307 @@
+.combat-container {
+    position: relative;
+    width: 100%;
+    height: 100vh;
+    background-image: url('../../../assets/images/background/background-fight.gif');
+    background-size: cover;
+    background-position: center;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+.combat-timer {
+    position: absolute;
+    top: 2%;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(0, 0, 0, 0.7);
+    color: white;
+    padding: 1% 2%;
+    border-radius: 20px;
+    font-size: clamp(14px, 1.2vw, 18px);
+    font-weight: bold;
+    text-align: center;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    width: fit-content;
+    z-index: 10;
+
+    &.urgent {
+        animation: blink 1s infinite;
+    }
+}
+
+.side-health-bar {
+    position: absolute;
+    top: 10%;
+    width: 20%;
+    display: flex;
+    flex-direction: column;
+    gap: 1vh;
+    z-index: 10;
+}
+
+.side-health-bar.left {
+    left: 5%;
+    align-items: flex-start;
+}
+
+.side-health-bar.right {
+    right: 5%;
+    align-items: flex-end;
+}
+
+.health-bar-container {
+    width: 100%;
+    background-color: #333;
+    height: 20px;
+    border-radius: 4px;
+    overflow: hidden;
+}
+
+.health-bar {
+    height: 100%;
+    display: flex;
+    gap: 2px;
+}
+
+.health-segment {
+    flex: 1;
+    height: 100%;
+    background-color: transparent;
+    border-radius: 2px;
+    transition: background-color 0.3s ease;
+    
+    &.filled {
+        background-color: #4CAF50;
+        
+        &.yellow {
+            background-color: #FFC107;
+        }
+        
+        &.red {
+            background-color: #F44336;
+        }
+    }
+}
+
+.player-stats {
+    margin-top: 10px;
+    color: white;
+    font-size: clamp(12px, 1vw, 14px);
+    text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.8);
+    background-color: rgba(0, 0, 0, 0.5);
+    padding: 8px 12px;
+    border-radius: 5px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.player-stats div {
+    margin: 3px 0;
+    display: flex;
+    justify-content: space-between;
+}
+
+.player-info-bottom {
+    position: absolute;
+    bottom: 5%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    padding: 0 3%;
+    box-sizing: border-box;
+}
+
+.player-info {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 1vh;
+    width: 30%;
+
+    &.left {
+        align-items: flex-start;
+    }
+
+    &.right {
+        align-items: flex-end;
+    }
+}
+
+.player-name {
+    font-size: clamp(16px, 1.5vw, 20px);
+    font-weight: bold;
+    color: white;
+    text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
+}
+
+.player-avatar {
+    width: 12vw;
+    height: 12vw;
+    max-width: 150px;
+    max-height: 150px;
+    min-width: 100px;
+    min-height: 100px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+    object-fit: cover;
+}
+
+.slash-effect {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    pointer-events: none;
+    z-index: 15;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    animation: slashFade 0.5s forwards;
+    
+    img {
+        width: 120%;
+        height: auto;
+        max-width: 200px;
+    }
+}
+
+.action-panel {
+    position: absolute;
+    bottom: 20%;
+    left: 50%;
+    transform: translateX(-50%);
+    display: flex;
+    gap: 2vw;
+    z-index: 10;
+}
+
+.combat-button {
+    padding: 1.5vh 3vw;
+    border: none;
+    border-radius: 8px;
+    font-size: clamp(14px, 1.2vw, 16px);
+    font-weight: bold;
+    text-transform: uppercase;
+    cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.3);
+
+    &.attack {
+        background-color: #e74c3c;
+        color: white;
+
+        &:hover:not(:disabled) {
+            background-color: #c0392b;
+            transform: translateY(-2px);
+        }
+    }
+
+    &.flee {
+        background-color: #3498db;
+        color: white;
+
+        &:hover:not(:disabled) {
+            background-color: #2980b9;
+            transform: translateY(-2px);
+        }
+    }
+
+    &:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
+    }
+}
+
+.dice-results {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: rgba(0, 0, 0, 0.8);
+    border-radius: 10px;
+    padding: 15px 25px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+    color: white;
+    font-size: clamp(16px, 1.5vw, 18px);
+    z-index: 10;
+
+    .dice-result {
+        display: flex;
+        gap: 15px;
+
+        .dice-label {
+            font-weight: bold;
+            color: #ccc;
+        }
+
+        .dice-value {
+            font-weight: bold;
+            color: #f1c40f;
+        }
+    }
+
+    .damage-result {
+        margin-top: 10px;
+        font-size: clamp(18px, 1.8vw, 20px);
+        font-weight: bold;
+        color: #e74c3c;
+    }
+}
+
+.combat-message {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    padding: 15px 30px;
+    border-radius: 8px;
+    font-size: clamp(16px, 1.8vw, 20px);
+    font-weight: bold;
+    z-index: 100;
+    animation: fadeInOut 3s forwards;
+
+    &.item-message {
+        background-color: rgba(46, 204, 113, 0.9);
+        color: white;
+    }
+
+    &.potion-message {
+        background-color: rgba(41, 128, 185, 0.9);
+        color: white;
+    }
+
+    &.hourglass-message {
+        background-color: rgba(243, 156, 18, 0.9);
+        color: white;
+    }
+
+    &.crystal-message {
+        background-color: rgba(155, 89, 182, 0.9);
+        color: white;
+    }
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}
+
+@keyframes fadeInOut {
+    0% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+    20% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    80% { opacity: 1; transform: translate(-50%, -50%) scale(1.1); }
+    100% { opacity: 0; transform: translate(-50%, -50%) scale(0.8); }
+}
+
+@keyframes slashFade {
+    0% { opacity: 0; transform: scale(0.8); }
+    50% { opacity: 1; transform: scale(1.1); }
+    100% { opacity: 0; transform: scale(0.8); }
+}

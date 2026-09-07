@@ -1,0 +1,198 @@
+.inventory-container {
+    position: relative;
+    width: 100%;
+    height: 0;
+    padding-bottom: 18.75%;
+    background-image: url('../../../assets/HUD/bigInventory.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    margin: 0 auto;
+
+    .items-grid {
+        position: absolute;
+        top: 37%;
+        left: 51%;
+        right: 15%;
+        bottom: 17%;
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 35%;
+        align-items: center;
+        justify-content: center;
+        width: 20%;
+        height: 20%;
+    }
+
+    .inventory-slot {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        height: 100%;
+        position: relative;
+        width: 100%;
+        height: 100%;
+
+        .item-image {
+            width: 100%;
+            height: 100%;
+            object-fit: contain;
+            filter: drop-shadow(0 0 2px rgba(0, 0, 0, 0.7));
+        }
+    }
+
+    .inventory-tooltip {
+        position: absolute;
+        z-index: 1000;
+        width: 180px;
+        background-color: rgba(44, 62, 80, 0.95);
+        color: #ecf0f1;
+        padding: 8px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+        border: 1px solid #f1c40f;
+        pointer-events: none;
+        opacity: 0;
+        transform: translateY(10px);
+        animation: fadeIn 0.2s forwards;
+
+        .tooltip-name {
+            margin: 0 0 5px 0;
+            font-weight: bold;
+            color: #f1c40f;
+            font-size: 0.8rem;
+            text-align: center;
+        }
+
+        .tooltip-description {
+            margin: 0;
+            font-size: 0.75rem;
+            line-height: 1.2;
+        }
+    }
+
+    @keyframes fadeIn {
+        to {
+            opacity: 1;
+            transform: translateY(0);
+        }
+    }
+
+    .item-choice-popup {
+        position: absolute;
+        bottom: 70%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        background-color: #2c3e50;
+        padding: 15px;
+        border-radius: 8px;
+        z-index: 1000;
+        border: 2px solid #f1c40f;
+        box-shadow: 0 0 15px rgba(0, 0, 0, 0.5);
+        width: 80%;
+        max-width: 300px;
+
+        h4 {
+            color: #f1c40f;
+            margin: 0 0 10px 0;
+            font-size: 1rem;
+            text-align: center;
+        }
+
+        .items-grid-choice {
+            position: static;
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 8px;
+            padding: 0;
+        }
+
+        .item-option {
+            cursor: pointer;
+            padding: 8px;
+            border-radius: 5px;
+            background-color: #34495e;
+            transition: all 0.2s;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            &:hover {
+                background-color: #3d566e;
+                transform: scale(1.05);
+            }
+
+            img {
+                width: 20px;
+                height: 20px;
+                object-fit: contain;
+                margin-bottom: 3px;
+            }
+
+            .item-name {
+                font-size: 0.7rem;
+                color: #ecf0f1;
+                text-align: center;
+            }
+        }
+
+        .item-tooltip {
+            position: absolute;
+            bottom: 100%;
+            left: 50%;
+            transform: translateX(-50%);
+            background-color: #34495e;
+            padding: 8px;
+            border-radius: 5px;
+            width: 180px;
+            z-index: 1001;
+            border: 1px solid #f1c40f;
+            margin-bottom: 10px;
+
+            p {
+                margin: 0;
+                font-size: 0.7rem;
+                color: #ecf0f1;
+            }
+        }
+    }
+
+    .potion-activated-message,
+    .item-effect-message {
+        position: fixed;
+        top: 30%;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 10px 20px;
+        border-radius: 5px;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+        font-weight: bold;
+        z-index: 1000;
+        animation: fadeInOut 3s ease-in-out;
+    }
+
+    .potion-activated-message {
+        background-color: rgba(46, 204, 113, 0.9);
+        color: white;
+    }
+
+    .item-effect-message {
+        background-color: rgba(52, 152, 219, 0.9);
+        color: white;
+    }
+
+    @keyframes fadeInOut {
+        0% {
+            opacity: 0;
+        }
+        15% {
+            opacity: 1;
+        }
+        85% {
+            opacity: 1;
+        }
+        100% {
+            opacity: 0;
+        }
+    }
+}

@@ -1,0 +1,55 @@
+<div class="flip-card" (mouseleave)="isFlipped = false">
+    <div class="flip-card-inner" [class.flipped]="isFlipped">
+        <div class="flip-card-front">
+            <h3>
+                {{ map.name }}
+                <span class="size-icon">
+                    @switch (map.size) { @case ('10') {
+                    <span>P</span>
+                    } @case ('15') {
+                    <span>M</span>
+                    } @case ('20') {
+                    <span>G</span>
+                    } @default {
+                    <span>-</span>
+                    } }
+                </span>
+            </h3>
+            <img [src]="map.imageUrl" alt="{{ map.name }}" class="map-image" (mouseenter)="isFlipped = true" />
+            <p>{{ 'mapCard.mode' | translate }}: {{ map.gameMode }}</p>
+            <p>{{ 'mapCard.lastModified' | translate }}: {{ map.lastSave | date: 'medium' }}</p>
+            <p class="owner-label">{{ 'mapCard.owner' | translate }}: {{ map.owner }}</p>
+            <p class="visibility-label">
+                @switch (map.visibility) { @case ('public') { <span class="badge badge-public">{{ 'mapCard.visibilityPublic' | translate }}</span> }
+                @case ('private') { <span class="badge badge-private">{{ 'mapCard.visibilityPrivate' | translate }}</span> } @case ('private-shared')
+                { <span class="badge badge-shared">{{ 'mapCard.visibilityShared' | translate }}</span> } }
+            </p>
+            @if (showActions) {
+            <div class="actions">
+                @if (canEdit) {
+                <button (click)="editMap()" [title]="'mapCard.editButton' | translate">
+                    <i class="fas fa-edit"></i>
+                </button>
+                } @if (canDelete) {
+                <button (click)="deleteMap()" [title]="'mapCard.deleteButton' | translate">
+                    <i class="fas fa-trash-alt"></i>
+                </button>
+                } @if (canChangeVisibility) {
+                <select [ngModel]="map.visibility" (ngModelChange)="changeVisibility($event)" [title]="'mapCard.changeVisibility' | translate">
+                    <option value="public">{{ 'mapCard.visibilityPublic' | translate }}</option>
+                    <option value="private">{{ 'mapCard.visibilityPrivate' | translate }}</option>
+                    <option value="private-shared">{{ 'mapCard.visibilityShared' | translate }}</option>
+                </select>
+                } @if (canDuplicate) {
+                <button (click)="duplicateMap()" [title]="'mapCard.duplicateButton' | translate">
+                    <i class="fas fa-copy"></i>
+                </button>
+                }
+            </div>
+            }
+        </div>
+        <div class="flip-card-back">
+            <p>{{ map.description }}</p>
+        </div>
+    </div>
+</div>

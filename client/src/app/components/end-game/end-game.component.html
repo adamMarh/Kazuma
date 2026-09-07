@@ -1,0 +1,261 @@
+<body>
+    <button class="nav-button nav-button-left" color="primary" (click)="navBack()">{{ 'endGame.quit' | translate }}</button>
+    <div class="end-game-container">
+        <div class="top-bar">
+            <h1 class="page-title">{{ 'endGame.title' | translate }}</h1>
+            <div class="spacer"></div>
+        </div>
+
+        <div class="main-content">
+            <div class="left-panel">
+                <div class="stats-container">
+                    <h2>{{ 'endGame.statsTitle' | translate }}</h2>
+                    <table class="stats-table compact">
+                        <thead>
+                            <tr>
+                                <th (click)="sortByStat('name', false)">
+                                    <div class="th-content">
+                                        <span class="stat-title">{{ 'endGame.names' | translate }}</span>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <span class="stat-title">{{ 'endGame.combats' | translate }}</span>
+                                        <div class="sort-buttons">
+                                            <button class="sort-symbol" (click)="sortByStat('combats', true)">
+                                                <img src="assets/HUD/down-icon.png" class="sort-img" />
+                                            </button>
+                                            <button class="sort-symbol" (click)="sortByStat('combats', false)">
+                                                <img src="assets/HUD/up-icon.png" class="sort-img" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <span class="stat-title">{{ 'endGame.evasions' | translate }}</span>
+                                        <div class="sort-buttons">
+                                            <button class="sort-symbol" (click)="sortByStat('evasions', true)">
+                                                <img src="assets/HUD/down-icon.png" class="sort-img" />
+                                            </button>
+                                            <button class="sort-symbol" (click)="sortByStat('evasions', false)">
+                                                <img src="assets/HUD/up-icon.png" class="sort-img" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <span class="stat-title">{{ 'endGame.victories' | translate }}</span>
+                                        <div class="sort-buttons">
+                                            <button class="sort-symbol" (click)="sortByStat('victories', true)">
+                                                <img src="assets/HUD/down-icon.png" class="sort-img" />
+                                            </button>
+                                            <button class="sort-symbol" (click)="sortByStat('victories', false)">
+                                                <img src="assets/HUD/up-icon.png" class="sort-img" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <span class="stat-title">{{ 'endGame.defeats' | translate }}</span>
+                                        <div class="sort-buttons">
+                                            <button class="sort-symbol" (click)="sortByStat('defeats', true)">
+                                                <img src="assets/HUD/down-icon.png" class="sort-img" />
+                                            </button>
+                                            <button class="sort-symbol" (click)="sortByStat('defeats', false)">
+                                                <img src="assets/HUD/up-icon.png" class="sort-img" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <span class="stat-title">{{ 'endGame.hpLost' | translate }}</span>
+                                        <div class="sort-buttons">
+                                            <button class="sort-symbol" (click)="sortByStat('hpLost', true)">
+                                                <img src="assets/HUD/down-icon.png" class="sort-img" />
+                                            </button>
+                                            <button class="sort-symbol" (click)="sortByStat('hpLost', false)">
+                                                <img src="assets/HUD/up-icon.png" class="sort-img" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th>
+                                <th>
+                                    <div class="th-content">
+                                        <span class="stat-title">{{ 'endGame.damageDone' | translate }}</span>
+                                        <div class="sort-buttons">
+                                            <button class="sort-symbol" (click)="sortByStat('damageDone', true)">
+                                                <img src="assets/HUD/down-icon.png" class="sort-img" />
+                                            </button>
+                                            <button class="sort-symbol" (click)="sortByStat('damageDone', false)">
+                                                <img src="assets/HUD/up-icon.png" class="sort-img" />
+                                            </button>
+                                        </div>
+                                    </div>
+                                </th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            @for (player of playerStats; track player.name) {
+                            <tr>
+                                <td>
+                                    {{ player.name }}
+                                </td>
+                                <td>{{ player.combats }}</td>
+                                <td>{{ player.evasions }}</td>
+                                <td>{{ player.victories }}</td>
+                                <td>{{ player.defeats }}</td>
+                                <td>{{ player.hpLost }}</td>
+                                <td>{{ player.damageDone }}</td>
+                            </tr>
+                            }
+                        </tbody>
+                    </table>
+                </div>
+
+                <div class="combined-stats-section">
+                    <div class="global-stats-info">
+                        <h3>{{ 'endGame.globalShort' | translate }}</h3>
+                        <table class="global-stats-table compact">
+                            <tbody>
+                                <tr>
+                                    <td>{{ 'endGame.duration' | translate }}</td>
+                                    <td>{{ globalStats?.formattedDuration }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'endGame.turns' | translate }}</td>
+                                    <td>{{ globalStats?.totalTurns }}</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'endGame.tilesShort' | translate }}</td>
+                                    <td>{{ globalStats?.tilesVisitedPercentage }}%</td>
+                                </tr>
+                                <tr>
+                                    <td>{{ 'endGame.doorsShort' | translate }}</td>
+                                    <td>{{ globalStats?.doorManipulatedPercentage }}%</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+
+                    <div class="money-info">
+                        <h3>{{ 'endGame.moneyTitle' | translate }}</h3>
+                        @if (rewardAmount !== null) {
+                        <div class="money-summary-info compact">
+                            <div class="money-row">
+                                <span class="money-label">{{ 'endGame.gameResult' | translate }}</span>
+                                <span class="money-value gain">+{{ rewardAmount }} 🪙</span>
+                            </div>
+                            <div class="money-row">
+                                <span class="money-label">{{ 'endGame.challengeProgress' | translate }}</span>
+                                <span class="money-value" [class.gain]="challengeDelta > 0"
+                                    >{{ challengeDelta > 0 ? '+' : '' }}{{ challengeDelta }} 🪙</span
+                                >
+                            </div>
+                            <div class="money-row total-row">
+                                <span class="money-label">{{ 'endGame.totalLabel' | translate }}</span>
+                                <span class="money-value total">+{{ totalDelta }} 🪙</span>
+                            </div>
+                            <div class="money-row">
+                                <span class="money-label">{{ 'endGame.balanceLabel' | translate }}</span>
+                                <span class="money-value balance">{{ newBalance }} 🪙</span>
+                            </div>
+                        </div>
+                        } @else {
+                        <div class="money-summary-info loading">{{ 'endGame.calculating' | translate }}</div>
+                        }
+                    </div>
+                </div>
+            </div>
+
+            <div class="right-panel">
+                @if(gameInstance?.gameId){
+                <app-chatroom [gameId]="gameInstance!.gameId" [playerName]="myPlayer!.name" [isLobby]="false"></app-chatroom>
+                }
+            </div>
+        </div>
+
+        <!-- Keep bottom-info hidden now since everything is in right panel -->
+        <div class="bottom-info" style="display: none">
+            <div class="global-stats-section bottom">
+                <h2>{{ 'endGame.globalStatistics' | translate }}</h2>
+                <table class="global-stats-table">
+                    <tbody>
+                        <tr>
+                            <td>{{ 'endGame.gameDuration' | translate }}</td>
+                            <td>{{ globalStats?.formattedDuration }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'endGame.totalTurns' | translate }}</td>
+                            <td>{{ globalStats?.totalTurns }}</td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'endGame.tilesVisitedPercentage' | translate }}</td>
+                            <td>{{ globalStats?.tilesVisitedPercentage }}%</td>
+                        </tr>
+                        <tr>
+                            <td>{{ 'endGame.doorsManipulatedPercentage' | translate }}</td>
+                            <td>{{ globalStats?.doorManipulatedPercentage }}%</td>
+                        </tr>
+                        @if (globalStats?.playersWithFlag !== undefined) {
+                        <tr>
+                            <td>{{ 'endGame.playersWithFlag' | translate }}</td>
+                            <td>{{ globalStats?.playersWithFlag }}</td>
+                        </tr>
+                        }
+                    </tbody>
+                </table>
+            </div>
+
+            <div class="money-summary-section bottom">
+                <h2>{{ 'endGame.moneySummary' | translate }}</h2>
+                @if (rewardAmount !== null) {
+                <div class="money-summary-info">
+                    @if (gameInstance?.entryFee && gameInstance!.entryFee! > 0) {
+                    <div class="money-row">
+                        <span class="money-label">{{ 'endGame.entryFee' | translate }}</span>
+                        <span class="money-value">{{ gameInstance!.entryFee }} 🪙</span>
+                    </div>
+                    <div class="money-row">
+                        <span class="money-label">{{ 'endGame.totalPot' | translate }}</span>
+                        <span class="money-value">{{ gameInstance!.pot }} 🪙</span>
+                    </div>
+                    }
+
+                    <div class="money-row">
+                        <span class="money-label">{{ 'endGame.gameResult' | translate }} ({{ gameStatusLabel }})</span>
+                        <span class="money-value gain">+{{ rewardAmount }} 🪙</span>
+                    </div>
+
+                    <div class="money-row">
+                        <span class="money-label">{{ 'endGame.challengeProgress' | translate }} ({{ challengeStatusLabel }})</span>
+                        <span class="money-value" [class.gain]="challengeDelta > 0">{{ challengeDelta > 0 ? '+' : '' }}{{ challengeDelta }} 🪙</span>
+                    </div>
+
+                    <div class="money-row total-row">
+                        <span class="money-label">{{ 'endGame.totalSummary' | translate }}</span>
+                        <span class="money-value total">+{{ totalDelta }} 🪙</span>
+                    </div>
+
+                    @if (challengeResult) {
+                    <div class="money-row detail-row">
+                        <span class="money-label">{{ 'endGame.challengeProgressDetail' | translate }}</span>
+                        <span class="money-value">{{ challengeResult.progress }} / {{ challengeResult.target }}</span>
+                    </div>
+                    }
+
+                    <div class="money-row">
+                        <span class="money-label">{{ 'endGame.newBalance' | translate }}</span>
+                        <span class="money-value balance">{{ newBalance }} 🪙</span>
+                    </div>
+                </div>
+                } @else {
+                <div class="money-summary-info loading">{{ 'endGame.calculating' | translate }}</div>
+                }
+            </div>
+        </div>
+    </div>
+</body>

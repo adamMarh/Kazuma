@@ -1,0 +1,16 @@
+{
+    "dependencies": {
+        "@nestjs/websockets": "^11.0.10",
+        "@types/html2canvas": "^0.5.35",
+        "html2canvas": "^1.4.1",
+        "socket.io": "^4.8.1"
+    },
+    "devDependencies": {
+        "@types/chai": "^5.0.1",
+        "@types/mocha": "^10.0.10",
+        "@types/sinon": "^17.0.4",
+        "chai": "^5.2.0",
+        "mocha": "^11.1.0",
+        "sinon": "^19.0.2"
+    }
+}

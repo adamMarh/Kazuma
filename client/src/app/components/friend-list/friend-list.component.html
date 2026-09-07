@@ -1,0 +1,121 @@
+<div class="friend-panel-wrapper">
+    <button class="friend-toggle-btn" (click)="togglePanel()">
+        {{ 'friends.title' | translate }} @if (pendingRequests.length > 0) {
+        <span class="badge">{{ pendingRequests.length }}</span>
+        }
+    </button>
+
+    @if (isOpen) {
+    <div class="friend-panel">
+        <div class="panel-header">
+            <h3>{{ 'friends.title' | translate }}</h3>
+            <button class="close-btn" (click)="togglePanel()">{{ 'common.close' | translate }}</button>
+        </div>
+
+        @if (errorMessage) {
+        <div class="error-banner">{{ errorMessage }}</div>
+        }
+
+        <div class="tabs">
+            <button [class.active]="activeTab === 'friends'" (click)="setTab('friends')">
+                {{ 'friends.friendsTab' | translate }} ({{ friends.length }})
+            </button>
+            <button [class.active]="activeTab === 'requests'" (click)="setTab('requests')">
+                {{ 'friends.requestsTab' | translate }} @if (pendingRequests.length > 0) {
+                <span class="tab-badge">{{ pendingRequests.length }}</span>
+                }
+            </button>
+            <button [class.active]="activeTab === 'search'" (click)="setTab('search')">{{ 'friends.searchTab' | translate }}</button>
+            <button [class.active]="activeTab === 'blocked'" (click)="setTab('blocked')">{{ 'friends.blockedTab' | translate }}</button>
+        </div>
+
+        <div class="tab-content">
+            @if (activeTab === 'friends') {
+            <div class="friends-list">
+                @if (friends.length === 0) {
+                <p class="empty-message">{{ 'friends.nofriends' | translate }}</p>
+                } @for (friend of friends; track friend.uid) {
+                <div class="friend-item">
+                    <div class="friend-info">
+                        <app-status-indicator [status]="friend.userStatus"></app-status-indicator>
+                        <div class="friend-details">
+                            <span class="friend-name">{{ friend.username }}</span>
+                            <span class="friend-status" [style.color]="statusColor(friend.userStatus)">{{ statusLabel(friend.userStatus) }}</span>
+                        </div>
+                    </div>
+                    <div class="friend-actions">
+                        @if (canInvite(friend)) {
+                        <button class="invite-btn" (click)="inviteFriend(friend)">{{ 'friends.invite' | translate }}</button>
+                        }
+                        <button class="block-btn" (click)="blockFriend(friend)" [title]="'friends.blockUser' | translate">🚫</button>
+                        <button class="remove-btn" (click)="removeFriend(friend)">{{ 'friends.removeButton' | translate }}</button>
+                    </div>
+                </div>
+                }
+            </div>
+            } @if (activeTab === 'requests') {
+            <div class="requests-list">
+                @if (pendingRequests.length === 0) {
+                <p class="empty-message">{{ 'friends.noRequests' | translate }}</p>
+                } @for (request of pendingRequests; track request.id) {
+                <div class="request-item">
+                    <div class="request-info">
+                        <span class="request-name">{{ request.fromUsername }}</span>
+                    </div>
+                    <div class="request-actions">
+                        <button class="accept-btn" (click)="acceptRequest(request)">{{ 'friends.acceptRequest' | translate }}</button>
+                        <button class="decline-btn" (click)="declineRequest(request)">{{ 'friends.declineRequest' | translate }}</button>
+                    </div>
+                </div>
+                }
+            </div>
+            } @if (activeTab === 'search') {
+            <div class="search-section">
+                <div class="search-input -row">
+                    <input
+                        type="text"
+                        [(ngModel)]="searchQuery"
+                        (ngModelChange)="onSearchInput()"
+                        (keydown.enter)="onSearchSubmit()"
+                        [placeholder]="'friends.searchPlaceholder' | translate"
+                        class="search-input"
+                    />
+                    <button class="search-go-btn" (click)="onSearchSubmit()" [title]="'friends.searchButtonTitle' | translate">↵</button>
+                </div>
+                @if (lastSearchedQuery === '') {
+                <p class="search-hint">{{ 'friends.searchHint' | translate }}</p>
+                }
+                <div class="search-results">
+                    @if (lastSearchedQuery.length > 0 && searchResults.length === 0) {
+                    <p class="empty-message">{{ 'friends.noResults' | translate }}</p>
+                    } @for (user of searchResults; track user.uid) {
+                    <div class="search-item">
+                        <span class="search-name">{{ user.username }}</span>
+                        <div class="search-actions">
+                            @if (isRequestSent(user.uid)) {
+                            <button class="sent-btn" disabled>{{ 'friends.sentButton' | translate }}</button>
+                            } @else {
+                            <button class="add-btn" (click)="sendRequest(user)">{{ 'friends.addButton' | translate }}</button>
+                            }
+                            <button class="block-btn" (click)="blockSearchUser(user)" [title]="'friends.blockUser' | translate">🚫</button>
+                        </div>
+                    </div>
+                    }
+                </div>
+            </div>
+            } @if (activeTab === 'blocked') {
+            <div class="blocked-list">
+                @if (blockedUsers.length === 0) {
+                <p class="empty-message">{{ 'friends.noBlockedUsers' | translate }}</p>
+                } @for (user of blockedUsers; track user.uid) {
+                <div class="blocked-item">
+                    <span class="blocked-name">{{ user.username }}</span>
+                    <button class="unblock-btn" (click)="unblockUser(user)">{{ 'friends.unblockButton' | translate }}</button>
+                </div>
+                }
+            </div>
+            }
+        </div>
+    </div>
+    }
+</div>

@@ -1,0 +1,49 @@
+@if (player) {
+<div class="player-info">
+    <h3>{{ 'playerInfo.title' | translate }}</h3>
+
+    <div class="player-header">
+        <img [src]="'./assets/images/avatars-images/avatar' + player.avatar + '.png'" alt="Avatar" class="avatar" />
+        <span class="player-name">{{ player.name }}</span>
+    </div>
+
+    <div class="health-bar">
+        <div class="health-fill" [style.width.%]="(player.healthpoints / maxHealthpoints) * 100"></div>
+        <span class="health-text">{{ player.healthpoints }} / {{ maxHealthpoints }}</span>
+    </div>
+
+    <div class="attributes">
+        <div class="attribute">
+            <span class="label">{{ 'playerInfo.speed' | translate }}:</span>
+            <span class="value">{{ player.speed }}</span>
+        </div>
+        <div class="attribute">
+            <span class="label">{{ 'playerInfo.attack' | translate }}:</span>
+            <span class="value">{{ player.attack }}</span>
+        </div>
+        <div class="attribute">
+            <span class="label">{{ 'playerInfo.defense' | translate }}:</span>
+            <span class="value">{{ player.defense }}</span>
+        </div>
+        <div class="attribute">
+            <span class="label">{{ 'playerInfo.attackBonusDice' | translate }}:</span>
+            <span class="value">{{ atkDiceType }}</span>
+        </div>
+        <div class="attribute">
+            <span class="label">{{ 'playerInfo.defenseBonusDice' | translate }}:</span>
+            <span class="value">{{ defDiceType }}</span>
+        </div>
+    </div>
+
+    <div class="action-points">
+        <div class="point-item">
+            <span class="label">{{ 'playerInfo.movements' | translate }}:</span>
+            <span class="value">{{ player.movementPoints }}</span>
+        </div>
+        <div class="point-item">
+            <span class="label">{{ 'playerInfo.actions' | translate }}:</span>
+            <span class="value"> {{ player.actionPoints }}</span>
+        </div>
+    </div>
+</div>
+}

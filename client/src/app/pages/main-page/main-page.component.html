@@ -1,0 +1,52 @@
+<body>
+    <div class="user-info">
+        @if (userName) {
+        <div class="user-profile">
+            @if (avatarImage) {
+            <div class="avatar-shell" [class.aura-white]="hasWhiteAura">
+                <div class="avatar-with-status">
+                    <img [src]="avatarImage" class="avatar" />
+                    <app-status-indicator class="avatar-status-dot" [status]="ownStatus"></app-status-indicator>
+                </div>
+            </div>
+            }
+            <span class="user-email" [class.enchanted-name]="hasEnchantedName" [class.stellar-crown]="hasStellarCrown">
+                {{ userName }}
+            </span>
+        </div>
+
+        <div class="user-actions">
+            <button class="icon-btn settings-icon" routerLink="/account-settings" [attr.aria-label]="'settings.settingsButton' | translate">
+                ⚙
+            </button>
+            <app-wallet [compact]="true"></app-wallet>
+            <button class="logout-btn" (click)="onLogout()">{{ 'auth.signOut' | translate }}</button>
+        </div>
+        }
+    </div>
+
+    <div class="container">
+        <div class="centerButtons">
+            <button routerLink="/join-game">{{ 'home.joinGame' | translate }}</button>
+            <button routerLink="/game-session">{{ 'home.createGame' | translate }}</button>
+            <button routerLink="/admin">{{ 'home.administerGames' | translate }}</button>
+            <button routerLink="/shop">{{ 'shop.title' | translate }}</button>
+        </div>
+    </div>
+    <div class="global-chat-wrapper">
+        <app-chatroom [gameId]="'global'"></app-chatroom>
+    </div>
+    <app-friend-list></app-friend-list>
+    @if (pendingInvitation) {
+    <app-game-invitation-dialog
+        [invitation]="pendingInvitation"
+        (accepted)="onAcceptInvitation($event)"
+        (declined)="onDeclineInvitation()"
+    ></app-game-invitation-dialog>
+    }
+    <div>
+        <footer>
+            <p>{{ 'footer.team109' | translate }}</p>
+        </footer>
+    </div>
+</body>

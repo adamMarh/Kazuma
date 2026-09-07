@@ -1,0 +1,502 @@
+.in-game-container {
+    display: grid;
+    grid-template-columns: 30% 40% 30%;
+    grid-template-rows: 15% 75% 10%;
+    height: 100vh;
+    gap: 10px;
+    padding: 10px;
+    box-sizing: border-box;
+    background-image: url('../../../assets/images/background/background-game.gif');
+    background-repeat: no-repeat;
+    background-size: cover;
+    overflow: hidden;
+}
+
+.top-left-bar {
+    grid-column: 1 / 2;
+    grid-row: 1 / 2;
+    display: flex;
+    align-items: start;
+    gap: 10px;
+}
+
+.challenge-inline {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    margin-top: 6px;
+    padding: 4px 10px;
+    border-top: 1px solid #c4a35a;
+
+    .challenge-icon {
+        font-size: 1.1rem;
+    }
+
+    .challenge-text {
+        color: #fdf7e3;
+        font-size: 0.85rem;
+        font-weight: 600;
+    }
+
+    .challenge-reward {
+        color: #ffd700;
+        font-weight: 700;
+        font-size: 0.85rem;
+    }
+}
+
+.nav-button {
+    background-color: #4b6043;
+    background-size: cover;
+    color: #fdf7e3;
+    border: 2px solid #3c291f;
+    padding: 12px 20px;
+    border-radius: 12px;
+    box-shadow: 3px 3px 0 #3c291f;
+    transition: all 0.3s ease-in-out;
+    height: 65px;
+    cursor: pointer;
+    position: relative;
+    overflow: hidden;
+
+    &:hover {
+        animation: pulseRotate 1.5s infinite alternate;
+        transform: translateY(-2px);
+        box-shadow: 5px 5px 0 #3c291f;
+    }
+
+    &::after {
+        content: '';
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(255, 255, 255, 0.1);
+        transform: scaleX(0);
+        transform-origin: right;
+        transition: transform 0.5s ease-in-out;
+        z-index: 0;
+    }
+
+    &:hover::after {
+        transform: scaleX(1);
+        transform-origin: left;
+    }
+}
+
+@keyframes pulseRotate {
+    0% {
+        transform: translateY(-2px) rotate(0deg);
+    }
+    25% {
+        transform: translateY(-2px) rotate(1deg);
+    }
+    50% {
+        transform: translateY(-2px) rotate(-1deg);
+    }
+    75% {
+        transform: translateY(-2px) rotate(0.5deg);
+    }
+    100% {
+        transform: translateY(-2px) rotate(0deg) scale(1.03);
+    }
+}
+
+.nav-button:active {
+    transform: translateY(1px) scale(0.98);
+    box-shadow: 1px 1px 0 #3c291f;
+    animation: none;
+}
+
+.combat-end-message {
+    position: absolute;
+    left: 2%;
+    top: 60%;
+}
+
+.timer-panel {
+    grid-column: 3;
+    grid-row: 1;
+    justify-self: center;
+    align-self: center;
+    width: 70%;
+    height: 70%;
+    background-image: url('../../../assets/HUD/timer.png');
+    background-size: contain;
+    background-position: center;
+    background-repeat: no-repeat;
+    padding: 20px 0px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.hide-timer {
+    display: none;
+}
+
+.game-info-panel {
+    grid-column: 2 / 3;
+    grid-row: 1 / 2;
+    text-align: center;
+    padding: 18px 12px;
+    border: 4px solid #1e1007;
+    background-color: #3e1d0f;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+    border-radius: 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    overflow: hidden;
+    box-shadow: 4px 4px 0 #000;
+    color: #fefae0;
+}
+
+.game-info-panel h3 {
+    margin: 0 0 8px 0;
+    font-size: 18px;
+    font-weight: bold;
+    color: #ffdeab;
+    text-shadow: 1px 1px 0 #000;
+}
+
+.game-info-panel .info-item {
+    margin: 3px 0;
+    font-size: 12px;
+    color: #fff4d0;
+}
+
+.map-container {
+    grid-column: 2 / 3;
+    grid-row: 2 / 3;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border-radius: 5px;
+    overflow: visible;
+    padding: 20px;
+    box-sizing: border-box;
+    position: relative;
+}
+
+.map-notification-top {
+    position: absolute;
+    top: 40px;
+    left: 50%;
+    transform: translateX(-50%);
+    z-index: 30;
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    pointer-events: none;
+}
+
+.map-notification-top app-error-popup {
+    pointer-events: auto;
+}
+
+.map-container app-movement-test {
+    width: 100%;
+    height: 100%;
+    object-fit: contain;
+    z-index: 2;
+    position: relative;
+    align-items: center;
+}
+
+.player-list-panel {
+    position: relative;
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    padding: 10px;
+    border-radius: 5px;
+    overflow-y: auto;
+    height: 70%;
+    width: 60%;
+    font-size: 0.9rem;
+}
+
+.player-list-panel h3 {
+    font-size: 1rem;
+    margin: 0 0 10px 0;
+}
+
+.player-list-panel ul {
+    list-style-type: none;
+    padding: 0;
+    margin: 0;
+}
+
+.player-list-panel li {
+    margin: 5px 0;
+}
+
+.chat-panel {
+    grid-column: 3 / 4;
+    grid-row: 2 / 3;
+    padding: 10px;
+    border-radius: 5px;
+    min-height: 250px;
+    max-height: 600px;
+    display: flex;
+    flex-direction: column;
+}
+
+.tab-content {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+}
+
+.tab-content > div {
+    flex: 1 1 auto;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    height: 100%;
+}
+
+app-chatroom,
+app-gamelog {
+    display: block;
+    height: 100%;
+    width: 90%;
+}
+
+::ng-deep app-chatroom .chat-container {
+    height: 100% !important;
+    max-width: none !important;
+    display: flex;
+    flex-direction: column;
+}
+
+::ng-deep app-chatroom .chat-messages {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: none !important;
+}
+
+::ng-deep app-chatroom .message-line {
+    flex: 0 0 auto;
+}
+
+::ng-deep app-gamelog .gamelog-container {
+    height: 100% !important;
+    max-width: none !important;
+    display: flex;
+    flex-direction: column;
+}
+
+::ng-deep app-gamelog .log-messages {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    max-height: none !important;
+}
+
+::ng-deep app-gamelog .log-entry {
+    flex: 0 0 auto;
+}
+
+.player-info-panel {
+    grid-column: 1 / 2;
+    grid-row: 2 / 4;
+    align-self: end;
+    justify-self: start;
+    margin-left: 0;
+    margin-bottom: 0;
+    width: 60%;
+    padding: 10px;
+    border-radius: 10px;
+}
+
+.inventory-panel {
+    grid-column: 2 / 3;
+    grid-row: 3 / 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: -40px;
+    overflow: visible;
+}
+
+.inventory-panel app-inventory {
+    width: 80%;
+    height: 100%;
+    display: block;
+}
+
+[hidden] {
+    display: none !important;
+}
+
+.player-info {
+    background-image: url('../../../assets/images/cards/big-card.png');
+    background-size: 100% 100%;
+    background-position: center;
+    background-repeat: no-repeat;
+    min-height: 320px;
+    width: 100%;
+    padding: 15px;
+    border-radius: 10px;
+    box-sizing: border-box;
+    font-size: 0.9rem;
+}
+
+.player-info h3 {
+    margin-top: 0;
+    color: black;
+    text-align: center;
+    font-size: 1rem;
+}
+
+.player-info .player-header .player-name {
+    font-size: 1rem;
+}
+
+.player-info .health-bar .health-text {
+    font-size: 0.8rem;
+}
+
+.player-info .attributes .attribute .label {
+    font-size: 0.8rem;
+}
+
+.player-info .attributes .attribute .value {
+    font-size: 0.9rem;
+}
+
+.player-info .dice-info .label {
+    font-size: 0.8rem;
+}
+
+.player-info .dice-info .value {
+    font-size: 0.9rem;
+}
+
+.player-info .action-points .point-item .label {
+    font-size: 0.8rem;
+}
+
+.player-info .action-points .point-item .value {
+    font-size: 0.9rem;
+}
+
+.action-buttons-container {
+    grid-column: 3 / 4;
+    grid-row: 3 / 4;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    align-items: center;
+    margin-top: -40px;
+    overflow: visible;
+    position: relative;
+    padding-bottom: 30px;
+    box-sizing: border-box;
+}
+
+.action-buttons {
+    font-weight: bold;
+    color: #fff;
+    background-color: #d6812c;
+    border: 4px solid #3e1d0f;
+    box-shadow: 4px 4px 0 #000;
+    text-shadow: 1px 1px 0 #000;
+    width: 300px;
+    height: 300px;
+    transition:
+        transform 0.15s ease,
+        background-color 0.2s ease;
+}
+
+.action-buttons:hover {
+    background-color: #f49c3f;
+    transform: translateY(-2px);
+}
+
+.tabs {
+    display: flex;
+    justify-content: center;
+    margin-bottom: 8px;
+    gap: 4px;
+}
+
+.tabs button {
+    padding: 6px 14px;
+    border: 2px solid #3e1d0f;
+    border-bottom: none;
+    background-color: #c96f33;
+    color: #fff;
+    cursor: pointer;
+    box-shadow:
+        inset -2px -2px 0 #8c3a00,
+        inset 2px 2px 0 #ffbf91;
+    border-radius: 4px 4px 0 0;
+    transition: background-color 0.2s;
+}
+
+.tabs button:hover {
+    background-color: #e5894c;
+}
+
+.tabs button.active {
+    background-color: #622b00;
+    color: #ffdeab;
+    border-bottom: none;
+    z-index: 2;
+}
+
+.combat-result-message {
+    position: fixed;
+    top: 30%;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 10px 20px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.3);
+    font-weight: bold;
+    z-index: 1000;
+    animation: fadeInOut 3s ease-in-out;
+    color: white;
+    text-align: center;
+}
+
+.combat-result-message.combat-result-win {
+    background-color: rgba(26, 139, 73, 0.95);
+}
+
+.combat-result-message.combat-result-loss {
+    background-color: rgba(214, 65, 48, 0.95);
+}
+
+.combat-result-message.combat-result-flee {
+    background-color: rgba(94, 94, 94, 0.9);
+}
+
+@keyframes fadeInOut {
+    0% {
+        opacity: 0;
+    }
+    15% {
+        opacity: 1;
+    }
+    85% {
+        opacity: 1;
+    }
+    100% {
+        opacity: 0;
+    }
+}

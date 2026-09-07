@@ -1,0 +1,179 @@
+<div class="top-bar">
+    <button class="nav-button nav-button-left" (click)="goBack()">{{ 'common.back' | translate }}</button>
+</div>
+
+<div class="container">
+    <div class="settings-card">
+        <h2>{{ 'settings.title' | translate }}</h2>
+
+        <form [formGroup]="form" (ngSubmit)="onSubmit()">
+            <div class="form-group">
+                <label>{{ 'settings.username' | translate }}</label>
+                <div class="field-box">
+                    <input type="text" formControlName="username" [placeholder]="'settings.enterUsername' | translate" />
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label>{{ 'auth.email' | translate }}</label>
+                <div class="field-box">
+                    <input type="email" formControlName="email" [placeholder]="'settings.enterEmail' | translate" />
+                </div>
+            </div>
+
+            <div class="avatar-section">
+                <label style="margin-bottom: 14px; display: block">{{ 'settings.avatar' | translate }}</label>
+
+                <div class="avatar-upload-container">
+                    <div class="upload-wrapper">
+                        <input type="file" #fileInput (change)="onFileSelected($event)" accept="image/*" style="display: none" />
+                        <button type="button" class="upload-btn" (click)="fileInput.click()" [disabled]="uploadingAvatar">
+                            {{ uploadingAvatar ? ('settings.uploading' | translate) : ('settings.uploadAvatar' | translate) }}
+                        </button>
+                    </div>
+
+                    @if (uploadError) {
+                    <p class="upload-error">
+                        {{ uploadError }}
+                    </p>
+                    }
+                </div>
+
+                <div class="avatar-grid">
+                    @for (avatar of avatars; track avatar.id) {
+                    <div class="avatar-item" [class.custom]="avatar.owner && avatar.owner !== 'global'">
+                        <img
+                            [src]="'data:image/jpeg;base64,' + avatar.imageBase64"
+                            (click)="selectAvatar(avatar.id)"
+                            [class.selected]="selectedAvatar === avatar.id"
+                        />
+                        @if (avatar.owner && avatar.owner !== 'global') {
+                        <span class="custom-badge">{{ 'settings.personalBadge' | translate }}</span>
+                        } @if (avatar.owner && avatar.owner !== 'global') {
+                        <button
+                            type="button"
+                            class="delete-btn"
+                            (click)="deleteAvatar($event, avatar.id)"
+                            [title]="'settings.deleteAvatarTitle' | translate"
+                        >
+                            ✕
+                        </button>
+                        }
+                    </div>
+                    }
+                </div>
+            </div>
+
+            <div class="busy-toggle" [class.busy-active]="isBusy">
+                <div class="busy-info">
+                    <span class="busy-label">{{ 'settings.busyMode' | translate }}</span>
+                    <span class="busy-description">{{
+                        isBusy ? ('settings.notificationsMuted' | translate) : ('settings.notificationsActive' | translate)
+                    }}</span>
+                </div>
+                <label class="switch">
+                    <input type="checkbox" [checked]="isBusy" (change)="toggleBusy()" />
+                    <span class="slider"></span>
+                </label>
+            </div>
+
+            <div class="form-group">
+                <label>{{ 'common.language' | translate }}</label>
+                <div class="field-box">
+                    <select class="lang-select" [value]="pendingLanguage" (change)="onLanguagePreview($event)">
+                        @for (lang of availableLanguages; track lang) {
+                        <option [value]="lang">{{ getLanguageLabel(lang) }}</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="theme-picker-inline">
+                <h3>{{ 'theme.title' | translate }}</h3>
+                <div class="theme-buttons">
+                    @for (theme of themes; track theme) {
+                    <button type="button" class="theme-btn" [class.active]="pendingTheme === theme" (click)="onThemePreview(theme)">
+                        {{ 'theme.' + theme | translate }}
+                    </button>
+                    }
+                </div>
+            </div>
+
+            <button type="submit" class="primary-btn">{{ 'common.save' | translate }}</button>
+
+            @if (successMessage) {
+            <p class="success-message">
+                {{ successMessage }}
+            </p>
+            } @if (errorMessage) {
+            <p class="error-message">
+                {{ errorMessage }}
+            </p>
+            }
+        </form>
+
+        <div class="separator"></div>
+
+        <h3 class="stats-title">{{ 'settings.statisticsTitle' | translate }}</h3>
+
+        @if (statsLoading) {
+        <div class="stats-loading">
+            <p>{{ 'settings.loadingStatistics' | translate }}</p>
+        </div>
+        } @if (!statsLoading && stats) {
+        <div class="stats-grid">
+            <div class="stat-item">
+                <span class="stat-label">{{ 'games.playedClassic' | translate }}</span>
+                <span class="stat-value">{{ stats.gamesPlayedClassic }}</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">{{ 'games.playedCTF' | translate }}</span>
+                <span class="stat-value">{{ stats.gamesPlayedCTF }}</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">{{ 'games.won' | translate }}</span>
+                <span class="stat-value">{{ stats.gamesWon }}</span>
+            </div>
+
+            <div class="stat-item">
+                <span class="stat-label">{{ 'games.averageTime' | translate }}</span>
+                <span class="stat-value">{{ getAverageGameTime() }}</span>
+            </div>
+        </div>
+        } @if (showDeleteAvatarConfirm) {
+        <div class="dialog-overlay">
+            <div class="dialog-content">
+                <h3 class="dialog-title">{{ 'accountSettings.deleteAvatarTitle' | translate }}</h3>
+                <p class="dialog-message">{{ 'accountSettings.deleteAvatarConfirm' | translate }}</p>
+                <div class="dialog-actions">
+                    <button class="dialog-confirm-btn" (click)="confirmDeleteAvatar()">{{ 'accountSettings.deleteAvatarButton' | translate }}</button>
+                    <button class="dialog-cancel-btn" (click)="cancelDeleteAvatar()">{{ 'accountSettings.deleteAvatarCancel' | translate }}</button>
+                </div>
+            </div>
+        </div>
+        }
+
+        <app-confirmation-popup
+            [message]="'accountSettings.unsavedChanges' | translate"
+            [isVisible]="showUnsavedDialog"
+            (confirm)="onUnsavedConfirm($event)"
+        ></app-confirmation-popup>
+
+        <hr class="divider" />
+
+        <div class="danger-zone">
+            <h3>{{ 'settings.dangerZone' | translate }}</h3>
+            <p class="danger-description">{{ 'settings.dangerDescription' | translate }}</p>
+            @if (!showDeleteConfirm) {
+            <button class="danger-btn" (click)="showDeleteConfirm = true">{{ 'settings.deleteAccount' | translate }}</button>
+            } @else {
+            <p class="danger-confirm-text">{{ 'settings.confirmDelete' | translate }}</p>
+            <div class="danger-actions">
+                <button class="danger-btn" (click)="onDeleteAccount()">{{ 'settings.confirmDeleteAccount' | translate }}</button>
+                <button class="cancel-btn" (click)="showDeleteConfirm = false">{{ 'common.cancel' | translate }}</button>
+            </div>
+            }
+        </div>
+    </div>
+</div>

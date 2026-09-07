@@ -1,0 +1,7 @@
+<div class="timer-container" [class.combat-timer]="gameService.inCombat" [class.urgent]="shouldBlink()">
+    @if (this.gameService.inCombat) {
+    <h1>{{ 'timer.combatDuration' | translate }}: {{ combatTime }}{{ 'timer.seconds' | translate }}</h1>
+    } @else {
+    <h1>{{ 'timer.timeRemaining' | translate }}: {{ turnTime }}</h1>
+    }
+</div>

@@ -1,0 +1,13 @@
+<div class="qr-code-container">
+    <div class="qr-text">
+        <p class="qr-label">{{ 'qrCode.title' | translate }}</p>
+        @if (errorMessage) {
+        <p class="qr-error">{{ errorMessage }}</p>
+        } @else {
+        <p class="qr-desc">{{ 'qrCode.description' | translate }}</p>
+        }
+    </div>
+    <div class="qr-canvas-wrapper">
+        <canvas #qrCanvas></canvas>
+    </div>
+</div>

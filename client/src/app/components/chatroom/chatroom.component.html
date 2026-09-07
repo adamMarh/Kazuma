@@ -1,0 +1,144 @@
+<div class="chat-container">
+    @if (!isPopup && popoutService.isPoppedOut) {
+    <div class="chat-popout-placeholder">
+        <p>{{ 'chatroom.popOutPlaceholder' | translate }}</p>
+        <button class="anchor-back-btn" (click)="anchorBack()">{{ 'chatroom.anchorBack' | translate }}</button>
+    </div>
+    } @else {
+    <div class="chat-header">
+        <h3>💬 {{ 'chatroom.title' | translate }}</h3>
+
+        <div class="header-actions">
+            @if (!showRoomsView) {
+            <button type="button" class="secondary-btn" (click)="openRoomsView()">{{ 'chatroom.manageRooms' | translate }}</button>
+            } @else {
+            <button type="button" class="secondary-btn" (click)="openChatView()">{{ 'chatroom.returnToRoom' | translate }}</button>
+            } @if (!isPopup && electronService.isElectron) {
+            <button class="popout-btn" (click)="popOut()" [title]="'chatroom.popOutTitle' | translate">&#x29C9;</button>
+            }
+        </div>
+    </div>
+
+    @if (showRoomsView) {
+    <!-- ROOMS VIEW -->
+    <div class="room-controls">
+        <div class="room-create">
+            <input
+                type="text"
+                [(ngModel)]="newRoomName"
+                maxlength="40"
+                [placeholder]="'chatroom.createRoomPlaceholder' | translate"
+                (keydown.enter)="createRoom()"
+            />
+            <button type="button" (click)="createRoom()" [disabled]="!newRoomName.trim()">{{ 'chatroom.create' | translate }}</button>
+        </div>
+
+        <div class="room-search">
+            <input
+                type="text"
+                [(ngModel)]="roomSearchTerm"
+                [placeholder]="'chatroom.searchRoomsPlaceholder' | translate"
+                (input)="refreshRoomSearch()"
+            />
+        </div>
+    </div>
+
+    <div class="room-section">
+        <div class="section-title">{{ 'chatroom.myRooms' | translate }}</div>
+
+        <div class="joined-room-list">
+            @for (room of joinedRooms; track trackRoom($index, room)) {
+            <div class="joined-room-chip" [class.active]="room.id === activeRoomId">
+                <span class="room-chip-name" (click)="openRoom(room.id)">{{ room.name }}</span>
+
+                @if (canDeleteRoom(room)) {
+                <button class="chip-action delete" type="button" (click)="deleteRoom(room, $event)">✕</button>
+                <button class="chip-action leave" type="button" (click)="leaveJoinedRoom(room, $event)">↩</button>
+                } @else if (canLeaveRoom(room)) {
+                <button class="chip-action leave" type="button" (click)="leaveJoinedRoom(room, $event)">↩</button>
+                }
+            </div>
+            }
+        </div>
+    </div>
+
+    <div class="room-section">
+        <div class="section-title">{{ 'chatroom.availableRooms' | translate }}</div>
+
+        <div class="available-room-list">
+            @for (room of filteredAvailableRooms; track trackRoom($index, room)) {
+            <div class="available-room-item">
+                <div class="room-info">
+                    <div class="room-name">{{ room.name }}</div>
+                    <div class="room-owner">
+                        @if (room.isSystem) { {{ 'chatroom.systemRoom' | translate }} } @else { {{ 'chatroom.createdBy' | translate }}
+                        {{ room.owner }} }
+                    </div>
+                </div>
+
+                <div class="room-actions">
+                    @if (isJoined(room.id)) {
+                    <button type="button" class="secondary-btn" (click)="openRoom(room.id)">{{ 'chatroom.open' | translate }}</button>
+                    } @else {
+                    <button type="button" (click)="joinAndOpenRoom(room)">{{ 'chatroom.join' | translate }}</button>
+                    } @if (canDeleteRoom(room)) {
+                    <button type="button" class="danger-btn" (click)="deleteRoom(room)">{{ 'common.delete' | translate }}</button>
+                    }
+                </div>
+            </div>
+            } @if (filteredAvailableRooms.length === 0) {
+            <div class="empty-room-list">
+                <p>{{ 'chatroom.noRoomsFound' | translate }}</p>
+            </div>
+            }
+        </div>
+    </div>
+    <p>{{ errorMessage }}</p>
+    } @else {
+    <!-- CHAT VIEW -->
+    <div class="active-room-banner">
+        <span class="active-room-label">{{ 'chatroom.currentRoom' | translate }}</span>
+        <span class="active-room-name">{{ activeRoom?.name || currentRoomId }}</span>
+    </div>
+
+    <div class="chat-messages" #messagesContainer>
+        @for (msg of messages; track $index) {
+        <div
+            class="message-line"
+            [ngClass]="{
+                mine: msg.author === playerName,
+                theirs: msg.author !== playerName
+            }"
+        >
+            <div class="message-content">
+                <div class="message-meta">
+                    <span class="message-avatar">
+                        <img [src]="getAvatarSrc(msg)" [alt]="msg.author" />
+                    </span>
+                    <span class="message-author" [ngClass]="getVisualClassesForAuthor(msg.author)">{{ msg.author }}</span>
+                    <span class="message-timestamp">{{ formatTimestamp(msg.timestamp) }}</span>
+                </div>
+                <div class="message-text">{{ msg.content }}</div>
+            </div>
+        </div>
+        } @if (messages.length === 0) {
+        <div class="empty-chat">
+            <p>{{ 'chat.emptyChat' | translate }}</p>
+        </div>
+        }
+    </div>
+
+    <div class="chat-input">
+        <textarea
+            #messageInput
+            [(ngModel)]="currentMessage"
+            [maxlength]="maxChars"
+            [placeholder]="('chatroom.messagePlaceholder' | translate) + ' ' + (activeRoom?.name || currentRoomId) + '...'"
+            (input)="adjustHeight()"
+            (keydown.enter)="$event.preventDefault(); send()"
+            rows="1"
+        ></textarea>
+        <button (click)="send()" [disabled]="!currentMessage.trim()">{{ 'chatroom.send' | translate }}</button>
+    </div>
+    } }
+</div>

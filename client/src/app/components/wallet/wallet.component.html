@@ -1,0 +1,9 @@
+<a class="wallet" [class.compact]="compact" routerLink="/wallet" role="button" tabindex="0">
+    @if (!compact) {
+    <span class="label">{{ 'wallet.balance' | translate }}</span>
+    } @if (!loading) {
+    <span class="value">{{ balance }} 🪙</span>
+    } @if (loading) {
+    <span class="value muted">...</span>
+    }
+</a>

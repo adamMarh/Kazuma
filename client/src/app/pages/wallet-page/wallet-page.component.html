@@ -1,0 +1,102 @@
+<div class="page">
+    <h2>{{ 'wallet.title' | translate }}</h2>
+    <button class="nav-button nav-button-left" routerLink="/home">{{ 'common.back' | translate }}</button>
+
+    <div class="card">
+        <div class="row">
+            <span>{{ 'wallet.balance' | translate }}</span>
+            @if (!loading) {
+            <strong>{{ wallet.balance }} 🪙</strong>
+            } @if (loading) {
+            <strong>...</strong>
+            }
+        </div>
+
+        <button class="refresh-btn" (click)="refresh()" [disabled]="loading">{{ 'wallet.refresh' | translate }}</button>
+    </div>
+
+    <div class="card">
+        <h3>{{ 'wallet.owned' | translate }}</h3>
+
+        <div class="section">
+            <div class="title">{{ 'wallet.characters' | translate }}</div>
+            @if (wallet.owned.characters.length) {
+            <div class="list">
+                @for (c of wallet.owned.characters; track $index) {
+                <span class="pill item-pill">
+                    @if (getPreviewImage(c)) {
+                    <img class="item-preview" [src]="getPreviewImage(c)" [alt]="'cosmetics.' + c | translate" />
+                    }
+                    <span class="pill-text">{{ 'cosmetics.' + c | translate }}</span>
+                </span>
+                }
+            </div>
+            } @else {
+            <span class="muted">{{ 'wallet.none' | translate }}</span>
+            }
+        </div>
+
+        <div class="section">
+            <div class="title">{{ 'wallet.visuals' | translate }}</div>
+            @if (wallet.owned.visuals.length) {
+            <div class="list">
+                @for (v of wallet.owned.visuals; track $index) {
+                <span class="pill item-pill">
+                    @if (getPreviewImage(v)) {
+                    <img class="item-preview" [src]="getPreviewImage(v)" [alt]="'cosmetics.' + v | translate" />
+                    }
+                    <span
+                        class="pill-text"
+                        [ngClass]="getVisualClass(v) === 'visual-enchanted' ? 'visual-rainbow-static' : getVisualClass(v) || ''"
+                        >{{ 'cosmetics.' + v | translate }}</span
+                    >
+                </span>
+                }
+            </div>
+            } @else {
+            <span class="muted">{{ 'wallet.none' | translate }}</span>
+            }
+        </div>
+
+        <div class="section">
+            <div class="title">{{ 'wallet.sounds' | translate }}</div>
+            @if (wallet.owned.sounds.length) {
+            <div class="list">
+                @for (s of wallet.owned.sounds; track $index) {
+                <span class="pill item-pill">
+                    <span class="pill-text">{{ 'cosmetics.' + s | translate }}</span>
+                    <button class="btn-play" (click)="playSoundById(s)" [class.playing]="playingAudioId === s">
+                        @if (playingAudioId === s) {
+                        <span>⏸</span>
+                        } @else {
+                        <span>▶</span>
+                        }
+                    </button>
+                </span>
+                }
+            </div>
+            } @else {
+            <span class="muted">{{ 'wallet.none' | translate }}</span>
+            }
+        </div>
+    </div>
+
+    <div class="card">
+        <h3>{{ 'wallet.challenges' | translate }}</h3>
+        @if (challengeHistory.length === 0) {
+        <div class="muted">{{ 'wallet.noChallenges' | translate }}</div>
+        } @else {
+        <div class="challenge-list">
+            @for (ch of challengeHistory; track $index) {
+            <div class="challenge-item">
+                <div class="challenge-desc">{{ ch.description }}</div>
+                <div class="challenge-meta">
+                    <span class="challenge-reward">+{{ ch.reward }} 🪙</span>
+                    <span class="challenge-date">{{ ch.completedAt | date: 'dd/MM/yyyy HH:mm' }}</span>
+                </div>
+            </div>
+            }
+        </div>
+        }
+    </div>
+</div>

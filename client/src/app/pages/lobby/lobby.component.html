@@ -1,0 +1,100 @@
+<body>
+    <app-error-popup [message]="errorPopupMessage" [isVisible]="errorPopupVisible" (closed)="handleErrorPopupClosed()"> </app-error-popup>
+    @if (game) {
+    <div class="waiting-room">
+        <h1>{{ 'lobby.waitingRoom' | translate }} {{ game.gameId }}</h1>
+        <div class="game-layout">
+            <div class="left-container">
+                @if (myPlayer!.isAdmin) {
+                <div class="game-info-btns">
+                    @if (!game.isLocked) {
+                    <button class="lock-btn" (click)="lockRoom()">{{ 'lobby.lockButton' | translate }}</button>
+                    } @if (game.isLocked) {
+                    <button class="unlock-btn" (click)="unlockRoom()">{{ 'lobby.unlockButton' | translate }}</button>
+                    } @if (!game.dropInActive) {
+                    <button class="lock-btn" (click)="activateDropIn()">{{ 'lobby.activateDropIn' | translate }}</button>
+                    } @if (game.dropInActive) {
+                    <button class="unlock-btn" (click)="deactivateDropIn()">{{ 'lobby.deactivateDropIn' | translate }}</button>
+                    } @if (!game.fastEliminationActive) {
+                    <button class="unlock-btn" (click)="activateFastEliminationMode()">{{ 'lobby.activateFastElimination' | translate }}</button>
+                    }@if (game.fastEliminationActive) {
+                    <button class="unlock-btn" (click)="deactivateFastEliminationMode()">{{ 'lobby.deactivateFastElimination' | translate }}</button>
+                    }
+                    <button class="start-btn" (click)="startGame()" [disabled]="!game.isLocked" [title]="'lobby.startGameWarning' | translate">
+                        {{ 'lobby.startGame' | translate }}
+                    </button>
+                </div>
+                }
+                <div class="game-info">
+                    <p>
+                        <strong>{{ 'lobby.map' | translate }}</strong> {{ game.map.name || 'Unknown' }}
+                    </p>
+                    <p>
+                        <strong>{{ 'lobby.status' | translate }}</strong>
+                        <span [class.locked]="game.isLocked">
+                            {{ game.isLocked ? ('lobby.locked' | translate) : ('lobby.unlocked' | translate) }}</span
+                        >
+                    </p>
+                </div>
+                <div class="players-container">
+                    <div class="players-header">
+                        <h2>{{ 'lobby.players' | translate }}</h2>
+                        @if(myPlayer?.isAdmin){
+                        <div class="add-bots-btns">
+                            <button (click)="addBot(true)">{{ 'lobby.addAggressiveBot' | translate }}</button>
+                            <button (click)="addBot(false)">{{ 'lobby.addPassiveBot' | translate }}</button>
+                        </div>
+                        }
+                    </div>
+                    <ul class="player-list">
+                        @for (player of players; track player) {
+                        <li class="player-item">
+                            <span class="player-name" [ngClass]="{ admin: player.isAdmin }">
+                                {{ player.name }}
+                                @if (player.isAdmin) {
+                                <span class="admin-icon">{{ 'lobby.adminIcon' | translate }}</span>
+                                } @if (player.isBot) {
+                                <span>{{ 'lobby.botIcon' | translate }}</span>
+                                }
+                            </span>
+                            <div class="items">
+                                @if (myPlayer!.isAdmin && player!.socketId !== myPlayer!.socketId) {
+                                <button class="kick-btn" (click)="kickPlayer(player.socketId)">{{ 'lobby.kickPlayer' | translate }}</button>
+                                }
+                                <img
+                                    [src]="'./assets/images/avatars-images/avatar' + player.avatar + '.png'"
+                                    alt="{{ 'lobby.playerAvatar' | translate }}"
+                                    class="player-avatar"
+                                />
+                            </div>
+                        </li>
+                        }
+                    </ul>
+                </div>
+                <div class="quit-btn-container">
+                    <button class="quit-game-btn" (click)="quitGame()">{{ 'lobby.quitGame' | translate }}</button>
+                </div>
+            </div>
+            <div class="right-container">
+                <app-chatroom [gameId]="game!.gameId" [playerName]="myPlayer!.name" [isLobby]="true"></app-chatroom>
+                <div class="qr-code-wrapper">
+                    <app-qr-code [gameId]="game!.gameId"></app-qr-code>
+                </div>
+            </div>
+        </div>
+    </div>
+    <app-friend-list></app-friend-list>
+    @if (stayOrLeaveVisible) {
+    <div class="block-conflict-overlay">
+        <div class="block-conflict-dialog">
+            <h3>{{ 'lobby.blockedPlayerTitle' | translate }}</h3>
+            <p>{{ 'lobby.blockedPlayerMessage' | translate: { username: stayOrLeaveBlockedUsername } }}</p>
+            <p>{{ 'lobby.blockedPlayerAction' | translate }}</p>
+            <div class="block-conflict-actions">
+                <button class="accept-btn" (click)="handleStayOrLeave(false)">{{ 'lobby.stayButton' | translate }}</button>
+                <button class="decline-btn" (click)="handleStayOrLeave(true)">{{ 'lobby.leaveButton' | translate }}</button>
+            </div>
+        </div>
+    </div>
+    } }
+</body>

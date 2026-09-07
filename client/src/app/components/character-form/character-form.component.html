@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="fr">
+    <body>
+        <div class="background-container">
+            <div class="character-form-container">
+                <button class="close-btn" (click)="openClosingPopup()">
+                    <img src="./assets/images/buttons/closing-form-btn.png" [alt]="'common.close' | translate" />
+                </button>
+                <div class="character-form">
+                    <div class="header">
+                        <h1 class="title">{{ 'characterForm.title' | translate }}</h1>
+                        <h3>{{ 'characterForm.subtitle' | translate }}</h3>
+                    </div>
+
+                    <form [formGroup]="characterForm">
+                        <div class="form-layout">
+                            <div class="left-section">
+                                <div class="avatar-section">
+                                    <h3>{{ 'characterForm.chooseAvatar' | translate }} <span class="required">*</span></h3>
+                                    @if (avatarErrorMessage) {
+                                    <div class="avatar-error">
+                                        {{ avatarErrorMessage }}
+                                    </div>
+                                    }
+                                    <div class="avatar-grid">
+                                        @for (avatar of avatars; track $index) {
+                                        <div
+                                            (click)="handleAvatarClick(avatar.id)"
+                                            [class.selected]="selectedAvatar === avatar.id"
+                                            [class.disabled]="
+                                                (unavailableAvatars.includes(avatar.id) && avatar.id !== currentAvatar) ||
+                                                isSpecialAvatarLocked(avatar.id)
+                                            "
+                                        >
+                                            <img src="{{ avatar.image }}" alt="{{ avatar.name }}" />
+                                            @if (isSpecialAvatarLocked(avatar.id)) {
+                                            <span class="lock-badge">🔒</span>
+                                            }
+                                        </div>
+                                        }
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="right-section">
+                                <h3>{{ 'characterForm.attributes' | translate }} <span class="required">*</span></h3>
+                                <table class="attributes-grid">
+                                    <thead>
+                                        <tr>
+                                            <th>{{ 'characterForm.attributesHeader' | translate }}</th>
+                                            <th>{{ 'characterForm.valuesHeader' | translate }}</th>
+                                        </tr>
+                                    </thead>
+                                    <tbody>
+                                        @for (attr of characterFormService.attributes; track $index) {
+                                        <tr>
+                                            <td class="attributes-name">
+                                                {{ attributeTranslations[attr.name] }}
+                                                <span class="attributes-description">{{ printTooltip(attr.name) }}</span>
+                                            </td>
+                                            <td [ngClass]="{ hasIncreasedValue: hasIncreasedValue(attr.name) }">{{ attr.value }}</td>
+                                        </tr>
+                                        }
+                                    </tbody>
+                                </table>
+
+                                <div class="bonus-points">
+                                    <h3>{{ 'characterForm.chooseBonus' | translate }} <span class="required">*</span></h3>
+                                    <div class="bonus-buttons">
+                                        <button type="button" class="btn-life" (click)="applyBonus('hp')">
+                                            {{ 'characterForm.bonusLife' | translate }} @if (isBonusApplied('hp')) {
+                                            <span class="check-icon">✔</span>
+                                            }
+                                        </button>
+                                        <button type="button" class="btn-rapidity" (click)="applyBonus('spd')">
+                                            {{ 'characterForm.bonusRapidity' | translate }} @if (isBonusApplied('spd')) {
+                                            <span class="check-icon">✔</span>
+                                            }
+                                        </button>
+                                    </div>
+                                </div>
+
+                                <div class="dice-bonus">
+                                    <h3>{{ 'characterForm.diceAssignment' | translate }} <span class="required">*</span></h3>
+                                    <div class="dice-instruction-container">
+                                        <h4>{{ 'characterForm.diceInstruction' | translate }}</h4>
+                                    </div>
+
+                                    <div class="dice-buttons">
+                                        <div class="btn-group">
+                                            <button type="button" class="btn-attaque" (click)="assignDice('atk')">
+                                                {{ 'characterForm.attackDice' | translate }}
+                                            </button>
+                                            @if (attackDice !== null) {
+                                            <img src="./assets/images/dice-{{ attackDice }}-faces.png" [alt]="'characterForm.diceAttackAlt' | translate" class="dice-image" />
+                                            }
+                                        </div>
+
+                                        <div class="btn-group">
+                                            <button type="button" class="btn-defense" (click)="assignDice('def')">
+                                                {{ 'characterForm.defenseDice' | translate }}
+                                            </button>
+                                            @if (defenseDice !== null) {
+                                            <img src="./assets/images/dice-{{ defenseDice }}-faces.png" [alt]="'characterForm.diceDefenseAlt' | translate" class="dice-image" />
+                                            }
+                                        </div>
+                                    </div>
+                                </div>
+
+                                <div class="submit-container">
+                                    <button
+                                        class="btn-form"
+                                        type="submit"
+                                        [disabled]="!characterForm.valid || !(isBonusApplied('hp') || isBonusApplied('spd')) || !isDiceAssigned()"
+                                        (click)="openSendingPopup()"
+                                    >
+                                        {{ 'characterForm.submit' | translate }}
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+
+                        <app-confirmation-popup
+                            [message]="'characterForm.confirmMessage' | translate"
+                            [isVisible]="showSendingPopup"
+                            (confirm)="confirmSendingForm($event)"
+                        >
+                        </app-confirmation-popup>
+                    </form>
+                </div>
+
+                <app-confirmation-popup
+                    [message]="'characterForm.closeConfirmMessage' | translate"
+                    [isVisible]="showClosingPopup"
+                    (confirm)="confirmClosingForm($event)"
+                >
+                </app-confirmation-popup>
+
+                <app-error-popup
+                    [message]="errorPopupMessage"
+                    [isVisible]="errorPopupVisible"
+                    [showReconnectButton]="showReconnectButton"
+                    (closed)="handleErrorPopupClosed()"
+                    (reconnect)="handleReconnect()"
+                >
+                </app-error-popup>
+            </div>
+        </div>
+    </body>
+</html>

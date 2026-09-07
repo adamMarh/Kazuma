@@ -1,0 +1,22 @@
+<body class="admin-page">
+    <button class="nav-button nav-button-left" color="primary" routerLink="/">{{ 'common.back' | translate }}</button>
+    @if (message !== '') {
+    <p>{{ message }}</p>
+    }
+    <div class="grid-map-wrapper">
+        <div class="maps-grid">
+            @if (maps$ | async; as maps) { @for (map of maps; track map._id) {
+            <app-map-card
+                [showActions]="true"
+                [map]="map"
+                [isOwner]="isOwner(map)"
+                (mapDeleted)="onMapDeleted($event)"
+                (mapVisibilityChanged)="onMapVisibilityChanged($event)"
+                (mapDuplicated)="onMapDuplicated($event)"
+            >
+            </app-map-card>
+            } }
+        </div>
+    </div>
+    <button class="nav-button nav-button-right" routerLink="/create">{{ 'admin.newMap' | translate }}</button>
+</body>

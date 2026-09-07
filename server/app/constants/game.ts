@@ -1,0 +1,3 @@
+export const PERCENTAGE = 100;
+export const DURATION_SIXTY_THOUSAND = 60000;
+export const DURATION_THOUSAND = 1000;

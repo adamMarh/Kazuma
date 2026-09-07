@@ -1,0 +1,45 @@
+<div class="player-list-container">
+    <h3>{{ 'playerList.title' | translate }}</h3>
+    <ul class="player-list">
+        @for (player of getPlayersInTurnOrder(); track player.socketId) { @if(!player.isEliminated){
+
+        <li
+            class="player-item"
+            [class.player-red]="getPlayerTeam(player) === 'red'"
+            [class.player-blue]="getPlayerTeam(player) === 'blue'"
+            [class.game-admin]="player.isAdmin"
+        >
+            <span class="player-name" [class.current-player-name]="isCurrentPlayer(player)">
+                {{ player.name }}
+                @if (player.isAdmin) {
+                <span class="admin-icon">👑</span>
+                } @if (hasFlagInInventory(player)) {
+                <span class="flag-icon">🚩</span>
+                } @if (player.isBot){
+                <span>🤖</span>
+                }
+            </span>
+            <span class="battles-won">{{ 'playerList.battlesWon' | translate }}: {{ player.battlesWon }}</span>
+        </li>
+        } } @for (player of eliminatedPlayers; track player.socketId){ @if (!isPlayerInactive(player)){
+        <li class="player-item" [class.game-admin]="player.isAdmin" [class.player-eliminated]="true">
+            <span class="player-name">
+                {{ player.name }} 💀 @if (player.isAdmin) {
+                <span class="admin-icon">👑</span>
+                }
+            </span>
+            <span class="battles-won">{{ 'playerList.battlesWon' | translate }}: {{ player.battlesWon }}</span>
+        </li>
+        } } @for (player of inactivePlayers; track player.socketId) {
+        <li class="player-item" [class.game-admin]="player.isAdmin" [class.quit-player]="true">
+            <span class="player-name">
+                {{ player.name }}
+                @if (player.isAdmin) {
+                <span class="admin-icon">👑</span>
+                }
+            </span>
+            <span class="battles-won">{{ 'playerList.battlesWon' | translate }}: {{ player.battlesWon }}</span>
+        </li>
+        }
+    </ul>
+</div>

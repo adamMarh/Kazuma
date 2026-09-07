@@ -1,0 +1,10 @@
+<div class="language-selector">
+    <label for="lang-select" class="lang-label">{{ 'common.language' | translate }}</label>
+    <select id="lang-select" class="lang-select" [(ngModel)]="currentLanguage" (change)="onLanguageChange($event)">
+        @for (lang of availableLanguages; track lang) {
+        <option [value]="lang">
+            {{ getLanguageLabel(lang) }}
+        </option>
+        }
+    </select>
+</div>

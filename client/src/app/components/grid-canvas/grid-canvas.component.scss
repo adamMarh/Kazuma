@@ -1,0 +1,111 @@
+.grid-container {
+    margin: 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    aspect-ratio: 1;
+    border: none;
+    position: relative;
+}
+
+.grid-row {
+    display: flex;
+    width: 100%;
+}
+
+.grid-cell {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 1;
+    border: 1px solid #eee;
+    cursor: crosshair;
+    background-size: cover;
+}
+
+.item-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 60%;
+    height: 60%;
+    object-fit: contain;
+    z-index: 1;
+    user-select: none;
+}
+
+.possible-movement-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: white;
+    border: 2px solid gray;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.possible-path-dot {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    width: 12px;
+    height: 12px;
+    background-color: yellow;
+    border: 2px solid yellowgreen;
+    border-radius: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 100;
+}
+
+.item-map-tooltip {
+    position: fixed;
+    z-index: 1000;
+    width: 180px;
+    background-color: rgba(44, 62, 80, 0.95);
+    color: #ecf0f1;
+    padding: 8px;
+    border-radius: 5px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.5);
+    border: 1px solid #f1c40f;
+    pointer-events: none;
+    opacity: 0;
+    transform: translateY(10px);
+    animation: fadeIn 0.2s forwards;
+    
+    .tooltip-name {
+        margin: 0 0 5px 0;
+        font-weight: bold;
+        color: #f1c40f;
+        font-size: 0.8rem;
+        text-align: center;
+    }
+    
+    .tooltip-description {
+        margin: 0;
+        font-size: 0.75rem;
+        line-height: 1.2;
+    }
+}
+
+@keyframes fadeIn {
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@media (max-width: 768px) {
+    .grid-container {
+        width: 90%;
+    }
+}
+
+@media (max-width: 480px) {
+    .grid-container {
+        width: 95%;
+    }
+}

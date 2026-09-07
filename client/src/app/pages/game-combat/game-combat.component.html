@@ -1,0 +1,164 @@
+<div class="combat-container">
+    <app-timer class="combat-timer"></app-timer>
+
+    <div class="side-health-bar left">
+        <div class="health-bar-container player-health">
+            <div class="health-bar">
+                @for (segment of getHealthSegments(combatState.attacker?.socketId === socketService.getSocketId() ? combatState.attacker :
+                combatState.target); track $index) {
+                <div
+                    class="health-segment"
+                    [class.filled]="$any(segment).filled"
+                    [class.yellow]="$any(segment).yellow"
+                    [class.red]="$any(segment).red"
+                ></div>
+                }
+            </div>
+        </div>
+        <div class="player-stats">
+            <div>
+                {{ 'combat.attack' | translate }}
+                {{ combatState.attacker?.socketId === socketService.getSocketId() ? combatState.attacker?.attack : combatState.target?.attack }}
+            </div>
+            <div>
+                {{ 'combat.defense' | translate }}
+                {{ combatState.attacker?.socketId === socketService.getSocketId() ? combatState.attacker?.defense : combatState.target?.defense }}
+            </div>
+            <div>
+                {{ 'combat.speed' | translate }}
+                {{ combatState.attacker?.socketId === socketService.getSocketId() ? combatState.attacker?.speed : combatState.target?.speed }}
+            </div>
+            <div>
+                {{ 'combat.attackDice' | translate }}
+                {{
+                    combatState.attacker?.socketId === socketService.getSocketId()
+                        ? combatState.target?.dice?.atk || 0
+                        : combatState.attacker?.dice?.atk || 0
+                }}
+            </div>
+            <div>
+                {{ 'combat.defenseDice' | translate }}
+                {{
+                    combatState.attacker?.socketId === socketService.getSocketId()
+                        ? combatState.target?.dice?.def || 0
+                        : combatState.attacker?.dice?.def || 0
+                }}
+            </div>
+        </div>
+    </div>
+
+    <div class="side-health-bar right">
+        <div class="health-bar-container opponent-health">
+            <div class="health-bar">
+                @for (segment of getHealthSegments(combatState.attacker?.socketId === socketService.getSocketId() ? combatState.target :
+                combatState.attacker); track $index) {
+                <div
+                    class="health-segment"
+                    [class.filled]="$any(segment).filled"
+                    [class.yellow]="$any(segment).yellow"
+                    [class.red]="$any(segment).red"
+                ></div>
+                }
+            </div>
+        </div>
+        <div class="player-stats">
+            <div>
+                {{ 'combat.attack' | translate }}
+                {{ combatState.attacker?.socketId === socketService.getSocketId() ? combatState.target?.attack : combatState.attacker?.attack }}
+            </div>
+            <div>
+                {{ 'combat.defense' | translate }}
+                {{ combatState.attacker?.socketId === socketService.getSocketId() ? combatState.target?.defense : combatState.attacker?.defense }}
+            </div>
+            <div>
+                {{ 'combat.speed' | translate }}
+                {{ combatState.attacker?.socketId === socketService.getSocketId() ? combatState.target?.speed : combatState.attacker?.speed }}
+            </div>
+            <div>
+                {{ 'combat.attackDice' | translate }}
+                {{
+                    combatState.attacker?.socketId === socketService.getSocketId()
+                        ? combatState.target?.dice?.atk || 0
+                        : combatState.attacker?.dice?.atk || 0
+                }}
+            </div>
+            <div>
+                {{ 'combat.defenseDice' | translate }}
+                {{
+                    combatState.attacker?.socketId === socketService.getSocketId()
+                        ? combatState.target?.dice?.def || 0
+                        : combatState.attacker?.dice?.def || 0
+                }}
+            </div>
+        </div>
+    </div>
+
+    <div class="player-info-bottom">
+        <div class="player-info left">
+            @if (showSlashEffect && !slashOnLeft) {
+            <div class="slash-effect">
+                <img src="./assets/images/slash-effect.gif" [alt]="'combat.slashEffect' | translate" />
+            </div>
+            }
+            <div class="player-name">
+                {{ combatState.attacker?.socketId === socketService.getSocketId() ? combatState.attacker?.name : combatState.target?.name }}
+            </div>
+            <img
+                class="player-avatar"
+                [src]="
+                    './assets/images/avatars-images/avatar' +
+                    (combatState.attacker?.socketId === socketService.getSocketId() ? combatState.attacker?.avatar : combatState.target?.avatar) +
+                    '.png'
+                "
+                [alt]="'combat.playerAvatar' | translate"
+            />
+        </div>
+
+        <div class="player-info right">
+            @if (showSlashEffect && slashOnLeft) {
+            <div class="slash-effect">
+                <img src="./assets/images/slash-effect.gif" [alt]="'combat.slashEffect' | translate" />
+            </div>
+            }
+            <div class="player-name">
+                {{ combatState.attacker?.socketId === socketService.getSocketId() ? combatState.target?.name : combatState.attacker?.name }}
+            </div>
+            <img
+                class="player-avatar"
+                [src]="
+                    './assets/images/avatars-images/avatar' +
+                    (combatState.attacker?.socketId === socketService.getSocketId() ? combatState.target?.avatar : combatState.attacker?.avatar) +
+                    '.png'
+                "
+                [alt]="'combat.opponentAvatar' | translate"
+            />
+        </div>
+    </div>
+
+    @if (combatState.attacker?.socketId === socketService.getSocketId()) {
+    <div class="action-panel">
+        <button class="combat-button attack" (click)="onAttackOpponent(combatState.target!.socketId)">{{ 'combat.attackButton' | translate }}</button>
+        <button class="combat-button flee" (click)="onAttemptFlee()" [disabled]="combatState.attacker?.fleeAttempts === 2">
+            {{ 'combat.fleeButton' | translate }} ({{ 2 - (combatState.attacker?.fleeAttempts || 0) }} {{ 'combat.fleeRemaining' | translate }})
+        </button>
+    </div>
+    }
+
+    <div class="dice-results">
+        <div class="dice-result">
+            <span class="dice-label">{{ 'combat.attackLabel' | translate }}</span>
+            <span class="dice-value">{{ combatState.attackResult.attackDiceRoll || '?' }}</span>
+        </div>
+        <div class="dice-result">
+            <span class="dice-label">{{ 'combat.defenseLabel' | translate }}</span>
+            <span class="dice-value">{{ combatState.attackResult.defenseDiceRoll || '?' }}</span>
+        </div>
+        <div class="damage-result">{{ 'combat.damageLabel' | translate }} {{ combatState.attackResult.damage || '0' }}</div>
+    </div>
+
+    @if (showItemMessage) {
+    <div class="combat-message {{ itemMessageClass }}">
+        {{ itemMessage }}
+    </div>
+    }
+</div>

@@ -1,0 +1,31 @@
+.timer-container {
+    position: relative;
+    color: black;
+    padding: 8px 16px;
+    border-radius: 20px;
+    font-size: 16px;
+    font-weight: bold;
+    text-align: center;
+    width: fit-content;
+    margin: 0 auto;
+    transition: all 0.3s ease;
+    
+    h1 {
+        margin: 0;
+        font-size: 1em;
+    }
+    
+    &.urgent {
+        animation: blink 1s infinite;
+    }
+}
+
+.combat-timer {
+    color: white
+}
+
+@keyframes blink {
+    0% { opacity: 1; }
+    50% { opacity: 0.5; }
+    100% { opacity: 1; }
+}

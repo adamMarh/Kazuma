@@ -1,0 +1,32 @@
+class FriendEvents {
+  static const String sendRequest = 'friend:sendRequest';
+  static const String receiveRequest = 'friend:receiveRequest';
+  static const String acceptRequest = 'friend:acceptRequest';
+  static const String declineRequest = 'friend:declineRequest';
+  static const String requestAccepted = 'friend:requestAccepted';
+  static const String requestDeclined = 'friend:requestDeclined';
+  static const String removeFriend = 'friend:removeFriend';
+  static const String friendRemoved = 'friend:friendRemoved';
+  static const String friendListUpdated = 'friend:friendListUpdated';
+  static const String pendingRequestsUpdated = 'friend:pendingRequestsUpdated';
+  static const String getFriends = 'friend:getFriends';
+  static const String getPendingRequests = 'friend:getPendingRequests';
+  static const String registerUser = 'friend:registerUser';
+  static const String usersUpdated = 'friend:usersUpdated';
+  static const String statusChanged = 'friend:statusChanged';
+  static const String setBusy = 'friend:setBusy';
+  static const String inviteToGame = 'friend:inviteToGame';
+  static const String gameInvitation = 'friend:gameInvitation';
+  static const String error = 'friend:error';
+  static const String searchUsers = 'friend:searchUsers';
+  static const String searchResults = 'friend:searchResults';
+  static const String newUser = 'friend:newUser';
+  static const String blockUser = 'friend:blockUser';
+  static const String unblockUser = 'friend:unblockUser';
+  static const String userBlocked = 'friend:userBlocked';
+  static const String userUnblocked = 'friend:userUnblocked';
+  static const String blockedListUpdated = 'friend:blockedListUpdated';
+  static const String lobbyBlockConflict = 'friend:lobbyBlockConflict';
+  static const String lobbyBlockConfirm = 'friend:lobbyBlockConfirm';
+  static const String lobbyBlockStayOrLeave = 'friend:lobbyBlockStayOrLeave';
+}

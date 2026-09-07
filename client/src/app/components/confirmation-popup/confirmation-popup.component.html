@@ -1,0 +1,15 @@
+@if (isVisible) {
+    <div class="popup">
+        <div class="popup-content">
+            <p>{{ message }}</p>
+            <div class="popup-buttons">
+                <button (click)="confirmPopup(true)">
+                    <img src="./assets/images/buttons/yes-btn.png" alt="Yes icon" />
+                </button>
+                <button (click)="confirmPopup(false)">
+                    <img src="./assets/images/buttons/no-btn.png" alt="No icon" />
+                </button>
+            </div>
+        </div>
+    </div>
+}

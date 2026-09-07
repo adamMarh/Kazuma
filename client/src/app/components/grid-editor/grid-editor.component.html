@@ -1,0 +1,100 @@
+<form #gameForm="ngForm">
+    @if (gridService.gridSize(); as size) {
+    <div class="editor-container">
+        <div class="toolbar-wrapper">
+            <app-toolbar (saveClicked)="onSave(gameForm)" (exitClicked)="onExit()" (generateClicked)="toggleGeneratorPanel()"></app-toolbar>
+        </div>
+        <div class="grid-wrapper">
+            <app-grid-canvas
+                [size]="size"
+                [grid]="gridService.grid()"
+                [items]="gridService.items()"
+                [tileSettings]="tileSettings"
+                [itemSettings]="itemSettings"
+                (cellMouseDown)="handleCellMouseDown($event)"
+                (cellMouseEnter)="handleCellMouseEnter($event)"
+                (dragOver)="handleDragOver($event)"
+                (cellDrop)="handleCellDrop($event)"
+                (gridItemDragStart)="handleGridItemDragStart($event)"
+                (deleteItem)="handleDeleteItem($event)"
+                (itemMouseDown)="handleItemMouseDown($event)"
+            ></app-grid-canvas>
+        </div>
+        <div class="controls">
+            <div class="game-info">
+                <div class="form-group">
+                    <label for="game-name">{{ 'gridEditor.gameNameLabel' | translate }}</label>
+                    <input
+                        id="game-name"
+                        name="gameName"
+                        [(ngModel)]="gridService.gameName"
+                        (ngModelChange)="onNameChange($event)"
+                        [placeholder]="'gridEditor.gameNamePlaceholder' | translate"
+                        maxlength="20"
+                        required
+                    />
+                    @if (gameForm.controls['gameName']?.invalid && gameForm.controls['gameName']?.touched) {
+                    <div class="name-error">{{ 'gridEditor.gameNameRequired' | translate }}</div>
+                    } @if (nameAlreadyTaken) {
+                    <div class="name-error">{{ 'gridEditor.gameNameTaken' | translate }}</div>
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="game-description">{{ 'gridEditor.descriptionLabel' | translate }}</label>
+                    <textarea
+                        id="game-description"
+                        name="gameDescription"
+                        [(ngModel)]="gridService.gameDescription"
+                        [placeholder]="'gridEditor.descriptionPlaceholder' | translate"
+                        maxlength="50"
+                        required
+                    ></textarea>
+                    @if (gameForm.controls['gameDescription']?.invalid && gameForm.controls['gameDescription']?.touched) {
+                    <div class="name-error">{{ 'gridEditor.descriptionRequired' | translate }}</div>
+                    }
+                </div>
+                <div class="form-group">
+                    <label for="action-points">{{ 'gridEditor.actionPointsLabel' | translate }}</label>
+                    <input id="action-points" name="actionPoints" type="number" [(ngModel)]="gridService.actionPoints" min="1" max="5" required />
+                </div>
+            </div>
+        </div>
+        @if (showGeneratorPanel) {
+        <div class="generator-panel">
+            <h3>{{ 'gridEditorGenerator.autoGeneration' | translate }}</h3>
+            <div class="generator-info">
+                <span>{{ 'gridEditorGenerator.tileSize' | translate }}: {{ size }}x{{ size }}</span>
+                <span>{{ 'gridEditorGenerator.gameMode' | translate }}: {{ gridService.gameMode() }}</span>
+            </div>
+            <div class="generator-option">
+                <label for="water-pct">{{ 'gridEditorGenerator.waterPercentage' | translate }}</label>
+                <input id="water-pct" type="range" min="0" max="40" step="1" [(ngModel)]="generatorWaterPercentage" name="waterPct" />
+                <span class="pct-value">{{ generatorWaterPercentage }}%</span>
+            </div>
+            <div class="generator-option">
+                <label for="ice-pct">{{ 'gridEditorGenerator.icePercentage' | translate }}</label>
+                <input id="ice-pct" type="range" min="0" max="40" step="1" [(ngModel)]="generatorIcePercentage" name="icePct" />
+                <span class="pct-value">{{ generatorIcePercentage }}%</span>
+            </div>
+            <div class="generator-actions">
+                <button class="gen-button" (click)="generateMap()" [disabled]="isGenerating">
+                    {{ isGenerating ? ('gridEditorGenerator.generating' | translate) : ('gridEditorGenerator.generate' | translate) }}
+                </button>
+                <button class="gen-button gen-cancel" (click)="showGeneratorPanel = false">{{ 'gridEditorGenerator.close' | translate }}</button>
+            </div>
+        </div>
+        }
+    </div>
+    } @else {
+    <div class="loading">{{ 'gridEditor.loadingMap' | translate }}</div>
+    }
+</form>
+
+<app-error-popup [message]="errorMessage" [isVisible]="errorPopupVisible" (closed)="onErrorPopupClosed()"></app-error-popup>
+
+<app-confirmation-popup
+    [message]="'gridEditor.unsavedChangesWarning' | translate"
+    [isVisible]="showUnsavedPopup"
+    (confirm)="onConfirmExit($event)"
+    class="popup"
+></app-confirmation-popup>

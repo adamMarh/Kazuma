@@ -1,0 +1,119 @@
+@if(this.gameService.inCombat) {
+<app-combat [combatState]="combatState!"></app-combat>
+}
+<div class="in-game-container" [hidden]="this.gameService.inCombat">
+    <div class="top-left-bar">
+        <button class="nav-button" (click)="quitGame()">{{ 'inGame.quitGame' | translate }}</button>
+    </div>
+
+    <div class="map-container" [hidden]="this.gameService.inCombat">
+        <div class="map-notification-top">
+            <app-error-popup
+                [message]="this.turnMessage"
+                [isVisible]="turnAnnouncerVisible"
+                (closed)="onErrorPopupClosed()"
+                [notification]="true"
+            ></app-error-popup>
+
+            <app-error-popup
+                [message]="this.gameEndedMessage"
+                [isVisible]="this.gameInstance!.ended"
+                (closed)="onErrorPopupClosed()"
+                [notification]="true"
+            ></app-error-popup>
+        </div>
+
+        <app-movement-test
+            [hidden]="this.gameService.inCombat"
+            [players]="allPlayers"
+            [displayedPlayers]="visiblePlayers"
+            [myPlayer]="myPlayer"
+            [gameInstance]="gameInstance"
+            [actionEnabled]="isAction"
+        />
+    </div>
+
+    <div class="game-info-panel">
+        <h3>{{ 'inGame.gameInfo' | translate }}</h3>
+        <div class="info-item">{{ 'inGame.mapSize' | translate }} {{ selectedMapSize }}x{{ selectedMapSize }}</div>
+        <div class="info-item">{{ 'inGame.activePlayers' | translate }} {{ activePlayersCount }}</div>
+        <div>{{ debugActivation }}</div>
+        @if (challengeService.activeChallenge) {
+        <div class="challenge-inline">
+            <span class="challenge-icon">🎯</span>
+            <span class="challenge-text">{{ 'inGame.challengeLabel' | translate }}: {{ challengeService.activeChallenge.description }}</span>
+            <span class="challenge-reward">+{{ challengeService.activeChallenge.reward }} 🪙</span>
+        </div>
+        }
+    </div>
+
+    <app-error-popup [message]="this.errorMessage" [isVisible]="this.errorPopupVisible" (closed)="onErrorPopupClosed()"></app-error-popup>
+
+    <app-confirmation-popup
+        [message]="this.quitConfirmMessage"
+        [isVisible]="this.quitConfirmVisible"
+        (confirm)="onQuitConfirmed($event)"
+    ></app-confirmation-popup>
+
+    <div class="timer-panel" [ngClass]="{ 'hide-timer': turnAnnouncerVisible }">
+        <app-timer></app-timer>
+    </div>
+
+    <div class="player-info-panel">
+        <app-player-info-panel [hidden]="this.gameService.inCombat" [player]="myPlayer"> </app-player-info-panel>
+    </div>
+
+    <div class="inventory-panel">
+        <app-inventory [hidden]="this.gameService.inCombat" [player]="myPlayer!"></app-inventory>
+    </div>
+
+    @if (gameInstance && myPlayer) {
+    <div class="chat-panel">
+        <div class="tabs">
+            <button [class.active]="activeTab === 'chat'" (click)="activeTab = 'chat'">{{ 'inGame.chatTab' | translate }}</button>
+            <button [class.active]="activeTab === 'journal'" (click)="activeTab = 'journal'">{{ 'inGame.journalTab' | translate }}</button>
+        </div>
+        <div class="tab-content">
+            <div [hidden]="activeTab !== 'chat'">
+                <app-chatroom [gameId]="gameInstance.gameId" [playerName]="myPlayer.name" [isLobby]="true"></app-chatroom>
+            </div>
+            <div [hidden]="activeTab !== 'journal'">
+                <app-gamelog></app-gamelog>
+            </div>
+        </div>
+    </div>
+    }
+
+    <div class="player-list-panel">
+        <app-player-list
+            [hidden]="this.gameService.inCombat"
+            [players]="players"
+            [inactivePlayers]="inactivePlayers"
+            [eliminatedPlayers]="eliminatedPlayers"
+            [currentPlayerId]="myPlayer?.socketId || null"
+            [teams]="gameInstance?.teams || null"
+            [gameMode]="gameInstance?.map?.gameMode || null"
+        >
+        </app-player-list>
+        @if (showCombatResultMessage) {
+        <div class="combat-result-message {{ combatResultClass }}">
+            {{ combatResultMessage }}
+        </div>
+        }
+    </div>
+
+    @if (myPlayer?.isMyTurn) {
+    <div class="action-buttons-container">
+        <button [hidden]="this.gameService.inCombat" class="action-buttons" (click)="toggleActionButton()">
+            {{ (isAction ? 'inGame.disableAction' : 'inGame.toggleAction') | translate }}
+        </button>
+        <button [hidden]="this.gameService.inCombat" class="action-buttons" (click)="passTurn()">{{ 'inGame.passTurn' | translate }}</button>
+    </div>
+    }
+
+    <app-error-popup [message]="invalidMovementMessage" [isVisible]="errorPopupVisible" (closed)="onErrorPopupClosed()"></app-error-popup>
+</div>
+
+@if (loadStats) {
+<app-end-game></app-end-game>
+}

@@ -1,0 +1,40 @@
+<body>
+    <app-grid-canvas
+        [size]="gridService.gridSize()"
+        [grid]="gridService.grid()"
+        [items]="gridService.items()"
+        [tileSettings]="titleSettings"
+        [itemSettings]="itemSettings"
+        [showPlayers]="true"
+        [players]="displayedPlayers"
+        [possibleMovements]="possibleMovements"
+        [shortestPath]="path"
+        (cellMouseDown)="handleCellMouseDown($event)"
+        (cellMouseEnter)="handleCellMouseEnter($event)"
+    />
+    <app-error-popup [message]="errorPopupMessage" [isVisible]="errorPopupVisible" (closed)="onErrorPopupClosed()"> </app-error-popup>
+    @if (showTileInfo && tileInfo) {
+    <div class="tile-info-box" [style.left.px]="tileInfoPosition.x" [style.top.px]="tileInfoPosition.y">
+        <h3>{{ 'movement.tileInfo' | translate }}</h3>
+        @if (!tileInfo.isActionTile) {
+        <p>
+            <strong>{{ 'movement.type' | translate }}</strong> {{ tileInfo.tileType }}
+        </p>
+        } @if (tileInfo.isActionTile && (tileInfo.tileType === 'doorClosed' || tileInfo.tileType === 'doorOpen')) {
+        <p>
+            <strong>{{ 'movement.door' | translate }}</strong>
+            {{ tileInfo.tileType === 'doorOpen' ? ('movement.doorOpen' | translate) : ('movement.doorClosed' | translate) }}
+        </p>
+        } @if (tileInfo.itemType) {
+        <p>
+            <strong>{{ 'movement.item' | translate }}</strong> {{ tileInfo.itemType }}
+        </p>
+        } @if (tileInfo.playerName) {
+        <p>
+            <strong>{{ 'movement.playerName' | translate }}</strong> {{ tileInfo.playerName }}
+        </p>
+        <img [src]="'./assets/images/avatars-images/avatar' + tileInfo.playerAvatar + '.png'" class="player-avatar" />
+        }
+    </div>
+    }
+</body>

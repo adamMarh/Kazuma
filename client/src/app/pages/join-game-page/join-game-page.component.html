@@ -1,0 +1,86 @@
+<body>
+    <div class="join-page">
+        <button class="nav-button nav-button-left" color="primary" routerLink="/">{{ 'common.back' | translate }}</button>
+        <div class="join-container">
+            @if (!showCharacterForm) {
+            <h3>{{ 'joinGame.subtitle' | translate }}</h3>
+            <input
+                type="text"
+                [placeholder]="'joinGame.enterAccessCode' | translate"
+                maxlength="4"
+                [(ngModel)]="gameAccessCode"
+                (keydown)="allowOnlyNumbers($event)"
+            />
+            <button [disabled]="gameAccessCode.length !== 4" class="submit-btn" (click)="joinGame()">{{ 'joinGame.joinButton' | translate }}</button>
+            }
+        </div>
+
+        <div class="game-list">
+            @if(games$ | async; as games) { @for (game of games; track game.gameId) {@if(!game.ended){
+
+            <div class="game-card">
+                <h4>{{ 'joinGame.accessCode' | translate }} {{ game.gameId }}</h4>
+                <p>{{ 'joinGame.mapSize' | translate }} {{ game.map.size }} x {{ game.map.size }}</p>
+                <p>{{ 'joinGame.playerCount' | translate }} {{ game.players.length }}</p>
+                <p>
+                    {{ 'joinGame.gameStatus' | translate }}
+                    {{ game.started ? ('joinGame.gameInProgress' | translate) : ('joinGame.gameWaiting' | translate) }}
+                </p>
+                @if(!game.started){
+                <p>{{ game.isLocked ? ('joinGame.gameLocked' | translate) : ('joinGame.gameOpen' | translate) }}</p>
+                }@else{
+                <p>{{ game.dropInActive ? ('joinGame.gameJoinable' | translate) : ('joinGame.gameNotJoinable' | translate) }}</p>
+                } @if (game.entryFee && game.entryFee > 0) {
+                <p class="entry-fee">{{ 'gameCreation.entryFeeLabel' | translate }} {{ game.entryFee }} 🪙</p>
+                } @if (game.friendsOnly) {
+                <p class="friends-only-badge">🔒 {{ 'joinGame.friendsOnlyBadge' | translate }}</p>
+                }
+                <button
+                    [disabled]="
+                        (game.isLocked && !game.started) ||
+                        (!game.dropInActive && game.started) ||
+                        (game.entryFee && game.entryFee > 0 && myBalance < game.entryFee) ||
+                        isFriendsOnlyBlocked(game)
+                    "
+                    class="submit-btn"
+                    (click)="joinGame(game.gameId)"
+                >
+                    {{ 'joinGame.joinButton' | translate }}
+                </button>
+                @if (game.entryFee && game.entryFee > 0 && myBalance < game.entryFee) {
+                <p class="insufficient-funds">{{ 'joinGame_extended.insufficientFunds' | translate }}</p>
+                } @if (isFriendsOnlyBlocked(game)) {
+                <p class="insufficient-funds">{{ 'joinGame.friendsOnlyBlocked' | translate }}</p>
+                }
+            </div>
+            } } }
+        </div>
+        @if (showCharacterForm) {
+        <div class="form">
+            <div class="overlay">
+                <app-character-form (characterCreated)="submitCharacterForm($event)" (closeForm)="closeCharacterForm()"></app-character-form>
+            </div>
+        </div>
+        }
+    </div>
+    <app-error-popup [message]="errorMessage" [isVisible]="errorPopupVisible" (closed)="errorPopupVisible = false"> </app-error-popup>
+</body>
+
+@if (blockConflictVisible) {
+<div class="block-conflict-overlay">
+    <div class="block-conflict-dialog">
+        <h3>{{ 'joinGame.blockConflictTitle' | translate }}</h3>
+        <p>{{ 'joinGame.blockConflictMessage' | translate }}</p>
+        <ul>
+            @for (name of blockConflictUsers; track name) {
+            <li>{{ name }}</li>
+            }
+        </ul>
+        <p>{{ 'joinGame.blockConflictConfirm' | translate }}</p>
+        <div class="block-conflict-actions">
+            <button class="accept-btn" (click)="confirmBlockConflict(true)">{{ 'common.confirm' | translate }}</button>
+            <button class="decline-btn" (click)="confirmBlockConflict(false)">{{ 'common.cancel' | translate }}</button>
+        </div>
+    </div>
+</div>
+}

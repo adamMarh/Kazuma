@@ -1,0 +1,28 @@
+<div class="creation-panel">
+    <button class="nav-button nav-button-left" color="primary" routerLink="/admin">{{ 'common.back' | translate }}</button>
+    <div class="main-container">
+        <h2>{{ 'gridCreation.title' | translate }}</h2>
+
+        <section class="game-options">
+            @for (gameMode of gameModes; track gameMode) {
+            <div class="game-options-card" (click)="tempGameMode = gameMode" [class.selected]="tempGameMode === gameMode">
+                <img src="./assets/images/cards/card.png" alt="Card" />
+                <span>{{ getGameModeLabel(gameMode) }}</span>
+            </div>
+            }
+        </section>
+
+        <section class="game-options">
+            @for (size of sizes; track size) {
+            <div class="game-options-card" (click)="tempSize = size" [class.selected]="tempSize === size">
+                <img src="./assets/images/cards/card.png" alt="Card" />
+                <span>{{ size }}x{{ size }}</span>
+            </div>
+            }
+        </section>
+        <button class="load-button" (click)="setGrid(tempSize, tempGameMode)">{{ 'gridCreation.createButton' | translate }}</button>
+        @if (errorMessage) {
+        <p class="error-message">{{ errorMessage }}</p>
+        }
+    </div>
+</div>

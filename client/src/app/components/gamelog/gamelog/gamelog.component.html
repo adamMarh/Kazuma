@@ -1,0 +1,19 @@
+<div class="gamelog-container">
+    <div class="filter-controls">
+        <button (click)="toggleMyLogs()">
+            {{ filterByMe ? ('gamelog.showAllEntries' | translate) : ('gamelog.showMyEntries' | translate) }}
+        </button>
+    </div>
+
+    <div class="log-messages">
+        @for (log of displayedLogs; track log) {
+            <div class="log-entry">
+                <span class="timestamp">{{ log.timestamp }}</span>
+                <span class="message">{{ getTranslatedMessage(log) }}</span>
+                @if (log.players && log.players.length) {
+                    <span class="players"> ({{ log.players.join(', ') }}) </span>
+                }
+            </div>
+        }
+    </div>
+</div>

@@ -1,0 +1,33 @@
+.wallet {
+    display: flex;
+    gap: 8px;
+    align-items: center;
+    padding: 6px 10px;
+    border-radius: 10px;
+    background: #111827;
+    color: #e5e7eb;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    cursor: pointer;
+    user-select: none;
+    position: relative;
+    z-index: 9999;
+    pointer-events: auto;
+    text-decoration: none;
+}
+
+.label {
+    opacity: 0.8;
+    font-size: 12px;
+}
+
+.value {
+    font-weight: 800;
+}
+
+.muted {
+    opacity: 0.7;
+}
+
+.compact .label {
+    display: none;
+}

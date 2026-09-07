@@ -1,0 +1,427 @@
+body {
+    display: flex;
+    flex-direction: column;
+    height: 100vh;
+}
+
+.user-info {
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    right: 20px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 15px;
+    z-index: 100;
+    padding: 0 8px;
+
+    .user-email {
+        color: white;
+        font-size: 14px;
+        background: rgba(0, 0, 0, 0.5);
+        padding: 8px 15px;
+        border-radius: 20px;
+        position: relative;
+    }
+
+    .user-email.enchanted-name {
+        background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3, #ff0000);
+        background-size: 200% 100%;
+        background-position: 50% center;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.2);
+    }
+
+    .user-email.stellar-crown {
+        padding-left: 0px;
+        padding-right: 0px;
+        /* Stellar crown should only add star glyphs, not change the username text color or add glow.
+           Keep pseudo-elements below to render the stars. */
+    }
+
+    .user-email.stellar-crown::before {
+        content: 'auto_awesome ';
+        display: inline;
+        color: #ffe082;
+        -webkit-text-fill-color: #ffe082;
+        color: #ffe082;
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-transform: none;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+    }
+
+    .user-email.stellar-crown::after {
+        content: ' auto_awesome';
+        display: inline;
+        -webkit-text-fill-color: #ffe082;
+        color: #ffe082;
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-transform: none;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+    }
+
+    .user-email.stellar-crown.enchanted-name {
+        background: linear-gradient(90deg, #ff0000, #ff7f00, #ffff00, #00ff00, #0000ff, #4b0082, #9400d3, #ff0000);
+        background-size: 200% 100%;
+        background-position: 50% center;
+        -webkit-background-clip: text;
+        -webkit-text-fill-color: transparent;
+        background-clip: text;
+        text-shadow: none;
+        box-shadow: none;
+        color: transparent;
+    }
+
+    .user-email.stellar-crown.enchanted-name::before,
+    .user-email.stellar-crown.enchanted-name::after {
+        /* Ensure the crown stars keep their yellow color and glow
+           even when the username text uses the rainbow background-clip.
+           Force no background and explicit color on the pseudo-elements. */
+        background: none !important;
+        -webkit-background-clip: initial !important;
+        background-clip: initial !important;
+        -webkit-text-fill-color: initial !important;
+        text-shadow:
+            0 0 8px rgba(255, 224, 130, 0.85),
+            0 0 16px rgba(255, 224, 130, 0.6);
+        color: #ffe082 !important;
+        display: inline;
+        font-family: 'Material Icons';
+        font-weight: normal;
+        font-style: normal;
+        letter-spacing: normal;
+        text-transform: none;
+        white-space: nowrap;
+        word-wrap: normal;
+        direction: ltr;
+    }
+
+    .user-email.stellar-crown.enchanted-name::before {
+        content: 'auto_awesome ';
+    }
+
+    .user-email.stellar-crown.enchanted-name::after {
+        content: ' auto_awesome';
+    }
+    .avatar-shell {
+        position: relative;
+        width: 48px;
+        height: 48px;
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: 50%;
+    }
+
+    .user-profile {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+    }
+
+    .avatar-shell.aura-white::before {
+        content: '';
+        position: absolute;
+        inset: -5px;
+        border-radius: 50%;
+        box-shadow:
+            0 0 10px 2px rgba(255, 255, 255, 0.9),
+            0 0 20px 6px rgba(255, 255, 255, 0.6);
+        animation: white-aura-pulse 1.8s ease-in-out infinite;
+        pointer-events: none;
+        inset: -4px; /* tighter hug around avatar */
+        filter: blur(4px);
+        background: radial-gradient(
+            circle,
+            rgba(255, 255, 255, 1) 0%,
+            rgba(255, 255, 255, 0.95) 22%,
+            rgba(255, 255, 255, 0.6) 45%,
+            rgba(255, 255, 255, 0) 75%
+        );
+    }
+
+    .avatar {
+        /* size to fill the shell and include border inside sizing so the shell and aura align */
+        width: 100%;
+        height: 100%;
+        box-sizing: border-box;
+        border-radius: 50%;
+        object-fit: cover;
+        border: 2px solid #3498db;
+        box-shadow: 0 0 8px rgba(52, 152, 219, 0.5);
+        transition: transform 0.2s ease;
+        display: block;
+    }
+
+    .avatar:hover {
+        transform: scale(1.08);
+    }
+
+    .avatar-with-status {
+        position: relative;
+        display: inline-block;
+        width: 48px;
+        height: 48px;
+
+        .avatar-status-dot {
+            position: absolute;
+            bottom: -1px;
+            right: -1px;
+            z-index: 1;
+
+            ::ng-deep .status-dot {
+                width: 14px;
+                height: 14px;
+                border: 2px solid #000;
+            }
+        }
+    }
+
+    .logout-btn {
+        background: linear-gradient(135deg, #e74c3c 0%, #c0392b 100%);
+        color: white;
+        border: none;
+        padding: 10px 20px;
+        border-radius: 8px;
+        font-size: 14px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        text-shadow: none;
+        -webkit-text-stroke: 0;
+
+        &:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(231, 76, 60, 0.4);
+        }
+    }
+    .user-actions {
+        display: flex;
+        gap: 10px;
+        align-items: center;
+    }
+
+    .settings-btn {
+        padding: 5px 10px;
+        border-radius: 5px;
+        border: 1px solid white;
+        background: transparent;
+        color: white;
+        cursor: pointer;
+    }
+
+    .settings-btn:hover {
+        background-color: rgba(255, 255, 255, 0.1);
+    }
+
+    .settings-icon-btn {
+        all: unset;
+        position: relative;
+        cursor: pointer;
+        font-size: 20px;
+        color: white;
+        padding: 6px;
+        border-radius: 50%;
+        transition: transform 0.2s ease;
+    }
+
+    .settings-icon-btn:hover {
+        transform: rotate(20deg) scale(1.1);
+    }
+
+    .settings-icon-btn .tooltip {
+        position: absolute;
+        bottom: -28px;
+        left: 50%;
+        transform: translateX(-50%);
+        background: rgba(0, 0, 0, 0.8);
+        padding: 5px 10px;
+        border-radius: 5px;
+    }
+}
+
+@keyframes white-aura-pulse {
+    0%,
+    100% {
+        opacity: 0.65;
+        transform: scale(0.98);
+    }
+    50% {
+        opacity: 1;
+        transform: scale(1.04);
+    }
+}
+
+@keyframes crown-twinkle {
+    0%,
+    100% {
+        opacity: 0.55;
+        transform: translateY(-50%) scale(0.9);
+    }
+    50% {
+        opacity: 1;
+        transform: translateY(-50%) scale(1.15);
+    }
+}
+
+@keyframes stellar-glow {
+    0%,
+    100% {
+        text-shadow:
+            0 0 8px rgba(255, 224, 130, 0.85),
+            0 0 16px rgba(255, 224, 130, 0.6);
+        box-shadow:
+            inset 0 -2px 0 0 rgba(255, 224, 130, 0.8),
+            0 0 15px rgba(255, 224, 130, 0.4),
+            0 0 30px rgba(255, 224, 130, 0.2);
+    }
+    50% {
+        text-shadow:
+            0 0 12px rgba(255, 224, 130, 1),
+            0 0 24px rgba(255, 224, 130, 0.8);
+        box-shadow:
+            inset 0 -2px 0 0 rgba(255, 224, 130, 1),
+            0 0 20px rgba(255, 224, 130, 0.6),
+            0 0 40px rgba(255, 224, 130, 0.3);
+    }
+}
+
+@keyframes rainbow-text {
+    0% {
+        background-position: 0% center;
+    }
+    50% {
+        background-position: 100% center;
+    }
+    100% {
+        background-position: 0% center;
+    }
+}
+
+.container {
+    margin: 0;
+    padding: 0;
+    background: url('../../../assets/images/home-page.jpg') no-repeat center center fixed;
+    background-size: 100% 100%;
+    flex: 1 1 auto;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding-left: 24px;
+}
+
+.centerButtons {
+    display: flex;
+    flex-direction: column;
+    gap: 28px;
+    justify-content: center;
+    align-items: center;
+    max-width: 720px;
+    width: 100%;
+    transform: translateY(6vh);
+}
+
+button {
+    background-color: transparent;
+    background-repeat: no-repeat;
+    border: none;
+    overflow: hidden;
+    outline: none;
+    color: white;
+    text-shadow:
+        5px 1px 0 #7d2828,
+        -5px 1px 0 #7d2828,
+        5px -1px 0 #7d2828,
+        -5px -1px 0 #7d2828;
+    -webkit-text-stroke: 1px #7d2828;
+    font-size: 40px;
+    font-style: normal;
+    font-weight: 500;
+    line-height: normal;
+}
+
+button:disabled {
+    color: #716d6d;
+    -webkit-text-stroke: 2.2px #c0c0c0;
+    text-shadow: none;
+}
+
+footer {
+    flex: 0 0 auto;
+    text-align: center;
+    background-color: black;
+    display: flex;
+    justify-content: center;
+}
+
+footer p {
+    color: white;
+}
+
+.global-chat-wrapper {
+    position: fixed;
+    bottom: 24px;
+    display: flex;
+    left: 16px;
+    top: 120px;
+    z-index: 9999;
+}
+
+.global-chat-wrapper app-chatroom {
+    flex: 1;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    width: 32vw;
+    min-width: 300px;
+    max-width: 450px;
+    max-height: 700px;
+}
+::ng-deep .global-chat-wrapper app-chatroom .chat-container {
+    height: 100%;
+    max-width: none !important;
+}
+
+.centerButtons button {
+    background: linear-gradient(135deg, rgba(62, 29, 15, 0.85) 0%, rgba(212, 175, 55, 0.4) 100%) !important;
+    border: 2px solid #d4af37 !important;
+    border-radius: 12px;
+    padding: 10px 20px;
+    color: #fff !important;
+    text-shadow: 0 0 10px rgba(255, 215, 0, 0.8) !important;
+    -webkit-text-stroke: 0 !important;
+    box-shadow: 0 0 15px rgba(212, 175, 55, 0.4) !important;
+    transition: all 0.3s ease;
+}
+.centerButtons button:hover:not(:disabled) {
+    background: linear-gradient(135deg, rgba(62, 29, 15, 0.95) 0%, rgba(255, 215, 0, 0.6) 100%) !important;
+    transform: scale(1.05);
+    box-shadow: 0 0 25px rgba(255, 215, 0, 0.8) !important;
+}
+.logout-btn {
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.4) 0%, rgba(62, 29, 15, 0.8) 100%) !important;
+    border: 1px solid #ff6b6b !important;
+    color: #fff !important;
+}
+.logout-btn:hover {
+    background: linear-gradient(135deg, rgba(231, 76, 60, 0.6) 0%, rgba(62, 29, 15, 0.9) 100%) !important;
+    box-shadow: 0 0 15px rgba(231, 76, 60, 0.6) !important;
+}
+.user-email:not(.enchanted-name) {
+    background: rgba(62, 29, 15, 0.8) !important;
+    border: 1px solid #d4af37 !important;
+    box-shadow: 0 0 10px rgba(212, 175, 55, 0.4) !important;
+}

@@ -1,0 +1,48 @@
+<div class="page">
+    <h2>{{ 'shop.title' | translate }}</h2>
+    <button class="nav-button nav-button-left" routerLink="/home">{{ 'common.back' | translate }}</button>
+
+    <div class="balance-bar">
+        <span class="balance-label">{{ 'shop.balanceLabel' | translate }}</span>
+        <span class="balance-value">{{ wallet.balance }} 🪙</span>
+    </div>
+
+    @if (loading && !catalog.characters.length && !catalog.visuals.length) {
+    <div class="loading-message">{{ 'shop.loading' | translate }}</div>
+    } @for (cat of categories; track cat.type) { @if (catalog[cat.type].length) {
+    <div class="category">
+        <h3>{{ cat.label | translate }}</h3>
+        <div class="items-grid">
+            @for (item of catalog[cat.type]; track item.id) {
+            <div class="item-card" [class.owned]="isOwned(item)" [class.too-expensive]="!isOwned(item) && wallet.balance < item.price">
+                @if (item.previewImage) {
+                <img [src]="item.previewImage" [alt]="'cosmetics.' + item.id | translate" class="item-preview" />
+                }
+                <div [class]="'item-name ' + (getVisualClass(item) === 'visual-enchanted' ? 'visual-rainbow-static' : getVisualClass(item) || '')">
+                    {{ 'cosmetics.' + item.id | translate }}
+                </div>
+                <div class="item-price">{{ item.price }} 🪙</div>
+
+                <div class="item-actions">
+                    @if (getShopItemSound(item.id)) {
+                    <button class="btn-play-sound" (click)="playSound(item)" [class.playing]="playingAudioId === item.id">
+                        {{ playingAudioId === item.id ? ('shop.stopAudio' | translate) : ('shop.playAudio' | translate) }}
+                    </button>
+                    } @if (isOwned(item)) {
+                    <button class="btn-owned" disabled>{{ 'shop.owned' | translate }}</button>
+                    } @else {
+                    <button class="btn-buy" [disabled]="!canBuy(item) || buyingItemId === item.id" (click)="buy(item)">
+                        @if (buyingItemId === item.id) {
+                        <span>{{ 'shop.buying' | translate }}</span>
+                        } @else {
+                        <span>{{ 'shop.buy' | translate }}</span>
+                        }
+                    </button>
+                    }
+                </div>
+            </div>
+            }
+        </div>
+    </div>
+    } }
+</div>

@@ -1,0 +1,41 @@
+<div class="inventory-container">
+    <div class="items-grid">
+        @for (item of player.inventory; track $index) {
+        <div class="inventory-slot" (mouseenter)="showItemTooltip(item, $event)" (mouseleave)="hideItemTooltip()">
+            <img [src]="itemSettings[item].image" [alt]="item" class="item-image" />
+        </div>
+        } @if (hoveredItem) {
+        <div class="inventory-tooltip" [style.left.px]="tooltipPosition.x" [style.top.px]="tooltipPosition.y">
+            <p class="tooltip-name">{{ hoveredItem }}</p>
+            <p class="tooltip-description">{{ 'items.' + hoveredItem | translate }}</p>
+        </div>
+        }
+    </div>
+
+    @if (chooseItemVisible && currentEncounteredItemPosition) {
+    <div class="item-choice-popup">
+        <h4>{{ 'inventory.chooseItemToReplace' | translate }}</h4>
+        <div class="items-grid-choice">
+            @for (item of itemsToChoose; track item.type) {
+            <div class="item-option" (click)="dropItem(item.type)" (mouseenter)="showTooltip(item)" (mouseleave)="hideTooltip()">
+                <img [src]="item.image" [alt]="item.type" />
+                <span class="item-name">{{ item.type }}</span>
+            </div>
+            }
+        </div>
+        @if (currentTooltip) {
+        <div class="item-tooltip">
+            <p>{{ currentTooltip.description }}</p>
+        </div>
+        }
+    </div>
+    } @if (showPotionMessage) {
+    <div class="potion-activated-message">
+        {{ potionActivatedMessage }}
+    </div>
+    } @if (showItemEffectMessage) {
+    <div class="item-effect-message">
+        {{ itemEffectMessage }}
+    </div>
+    }
+</div>

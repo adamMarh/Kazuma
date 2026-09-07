@@ -1,0 +1,18 @@
+export const COMBAT_EVENTS = {
+    INIT_COMBAT: 'initCombat',
+    COMBAT_STARTED: 'combatStarted',
+    PLAYERS_IN_COMBAT: 'playersInCombat',
+    ATTACK: 'attack',
+    COMBAT_STATE_UPDATE: 'playerAttacked',
+    ATTEMPT_FLEE: 'attemptFlee',
+    END_COMBAT: 'endCombat',
+    COMBAT_ENDED: 'combatEnded',
+    ATTACK_OPPONENT: 'attackOpponent',
+    OPPONENT_ATTACKED: 'opponentAttacked',
+    TURN_CHANGED: 'combatTurnChanged',
+    ERROR: 'error',
+    START_TIMER: 'startTimer',
+    RESET_TIMER: 'pauseTimer',
+    TIMER_STATE: 'timerValue',
+    NAVIGATION: 'navigation',
+};

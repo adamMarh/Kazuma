@@ -1,0 +1,26 @@
+@if (this.isVisible){
+<div class="error-popup">
+    <div class="error-popup-content">
+        @if (notification){
+        <h2 class="notification-title">{{ 'popup.notification' | translate }}</h2>
+        } @else if (this.confirmation) {
+        <h2 class="confirmation-title">{{ 'popup.confirmation' | translate }}</h2>
+        } @else {
+        <h2 class="error-title">{{ 'popup.error' | translate }}</h2>
+        }
+        <p class="error-message">{{ message }}</p>
+        <div class="error-buttons">
+            @if(notification){
+            <button (click)="closePopup()" class="error-close-btn">{{ 'popup.closeNotification' | translate }}</button>
+            } @else if(this.confirmation) {
+            <button (click)="handleConfirm()" class="error-confirm-btn">{{ 'popup.confirm' | translate }}</button>
+            <button (click)="closePopup()" class="error-cancel-btn">{{ 'popup.cancel' | translate }}</button>
+            } @else{
+            <button (click)="closePopup()" class="error-close-btn">{{ 'popup.returnHome' | translate }}</button>
+            } @if (showReconnectButton) {
+            <button (click)="handleReconnect()" class="error-reconnect-btn">{{ 'popup.tryReconnect' | translate }}</button>
+            }
+        </div>
+    </div>
+</div>
+}

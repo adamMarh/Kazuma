@@ -1,0 +1,252 @@
+@use 'sass:color';
+input {
+    width: 25%;
+    padding: 8px;
+    margin: 10px 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    position: relative;
+}
+
+.block-conflict-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0, 0, 0, 0.6);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 10000;
+}
+
+.block-conflict-dialog {
+    background-image: url('../../../assets/images/cards/big-card.png');
+    background-size: 100% 100%;
+    border-radius: 20px;
+    padding: 30px;
+    max-width: 500px;
+    width: 90%;
+    text-align: center;
+
+    h3 {
+        color: #fff;
+        margin: 0 0 16px;
+        font-size: 20px;
+    }
+
+    p {
+        color: #fff;
+        font-size: 14px;
+        margin: 0 0 12px;
+        line-height: 1.5;
+
+        strong {
+            color: #ffdeab;
+        }
+    }
+
+    ul {
+        margin: 0 0 16px;
+        padding-left: 20px;
+        text-align: left;
+
+        li {
+            color: #ffdeab;
+            font-size: 14px;
+        }
+    }
+}
+
+.block-conflict-actions {
+    display: flex;
+    gap: 12px;
+    justify-content: center;
+    margin-top: 20px;
+}
+
+.accept-btn {
+    background: burlywood;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 0;
+
+    &:hover {
+        background: color.adjust(burlywood, $lightness: -10%);
+    }
+}
+
+.decline-btn {
+    background: #e23f25;
+    color: #fff;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 0;
+
+    &:hover {
+        background: #ff5840;
+    }
+}
+
+h3 {
+    color: white;
+    font-size: 30px;
+    text-align: center;
+    margin-top: 40px;
+    position: relative;
+}
+.game-list {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 20px;
+    justify-content: center;
+    margin: 40px 20px;
+    position: relative;
+}
+
+.game-card {
+    background-color: rgba(255, 255, 255, 0.1);
+    border: 1px solid rgba(255, 255, 255, 0.3);
+    border-radius: 8px;
+    padding: 20px;
+    width: 300px;
+    color: white;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+
+    &:hover {
+        background-color: rgba(255, 255, 255, 0.15);
+        transform: translateY(-5px);
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.4);
+    }
+
+    h4 {
+        margin: 0 0 15px 0;
+        font-size: 18px;
+        color: #199433;
+    }
+
+    p {
+        margin: 8px 0;
+        font-size: 14px;
+    }
+
+    .entry-fee {
+        color: #fbbf24;
+        font-weight: 700;
+        font-size: 15px;
+    }
+
+    .insufficient-funds {
+        color: #ef4444;
+        font-weight: 700;
+        font-size: 13px;
+        margin-top: 4px;
+    }
+
+    .friends-only-badge {
+        color: #60a5fa;
+        font-weight: 700;
+        font-size: 14px;
+        margin-top: 4px;
+    }
+}
+body {
+    background: url('../../../assets/images/home-page.jpg') no-repeat center center fixed;
+    background-size: cover;
+    background-attachment: fixed;
+    background-position: center top;
+    background-size: 100% 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+body::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.781);
+}
+
+.join-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+}
+
+.submit-btn {
+    padding: 8px 15px;
+    background-color: #065c18;
+    color: white;
+    border: none;
+    cursor: pointer;
+    position: relative;
+    border-radius: 5px;
+    &:hover {
+        background-color: #199433;
+    }
+}
+
+.submit-btn:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+}
+
+.form {
+    position: fixed;
+    margin: auto;
+    box-sizing: border-box;
+    display: flex;
+    align-items: flex-start;
+    justify-content: center;
+    overflow-y: auto;
+    top: 0;
+    left: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.39);
+    z-index: 1000;
+    padding: 20px;
+    border-radius: 3px;
+    padding-top: 20px;
+    padding-bottom: 20px;
+    width: 100%;
+    height: 100%;
+}
+
+:host-context(.theme-active) {
+    .game-card {
+        background: rgba(62, 29, 15, 0.85) !important;
+        border: 1px solid #d4af37 !important;
+        box-shadow: 0 0 20px rgba(212, 175, 55, 0.4) !important;
+    }
+    .game-card:hover {
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.6) !important;
+        border-color: rgba(255, 215, 0, 0.8) !important;
+    }
+    .submit-btn {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(62, 29, 15, 0.8) 100%) !important;
+        border: 1px solid #d4af37 !important;
+        color: #fff !important;
+        text-shadow: 0 0 8px rgba(212, 175, 55, 0.8) !important;
+    }
+    .submit-btn:hover:not(:disabled) {
+        background: linear-gradient(135deg, rgba(255, 215, 0, 0.6) 0%, rgba(212, 175, 55, 0.9) 100%) !important;
+        box-shadow: 0 0 15px rgba(212, 175, 55, 0.6) !important;
+    }
+    .block-conflict-dialog {
+        background: rgba(62, 29, 15, 0.95) !important;
+        border: 2px solid #d4af37 !important;
+        background-image: none !important;
+        box-shadow: 0 0 30px rgba(212, 175, 55, 0.6) !important;
+    }
+    .accept-btn {
+        background: linear-gradient(135deg, rgba(212, 175, 55, 0.4) 0%, rgba(62, 29, 15, 0.8) 100%) !important;
+        border: 1px solid #d4af37 !important;
+    }
+    .decline-btn {
+        background: rgba(231, 76, 60, 0.4) !important;
+        border: 1px solid #ff6b6b !important;
+    }
+}

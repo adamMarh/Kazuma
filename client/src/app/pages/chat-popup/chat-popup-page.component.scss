@@ -1,0 +1,67 @@
+:host {
+    position: fixed;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    background: #2e1a0d;
+}
+
+.popup-container {
+    display: flex;
+    flex-direction: column;
+    flex: 1 1 0;
+    min-height: 0;
+    overflow: hidden;
+}
+
+.popup-header {
+    flex: 0 0 auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 8px 12px;
+    background: #1e1007;
+    color: #ffdeab;
+    font-weight: bold;
+    font-size: 14px;
+    border-bottom: 2px solid #3e1d0f;
+    text-shadow: 1px 1px #000;
+    -webkit-app-region: drag;
+}
+
+.popup-title {
+    pointer-events: none;
+}
+
+.anchor-btn {
+    -webkit-app-region: no-drag;
+    background: #d6812c;
+    color: #fff;
+    border: 2px solid #3e1d0f;
+    padding: 4px 12px;
+    font-weight: bold;
+    font-size: 12px;
+    cursor: pointer;
+
+    &:hover {
+        background: #f49c3f;
+    }
+}
+
+app-chatroom {
+    flex: 1 1 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 0;
+    overflow: hidden;
+}
+
+::ng-deep app-chatroom .chat-container {
+    flex: 1 1 0 !important;
+    min-height: 0 !important;
+    max-width: none !important;
+    box-sizing: border-box !important;
+    overflow: hidden !important;
+    box-shadow: none !important;
+}

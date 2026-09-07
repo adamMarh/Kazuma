@@ -1,0 +1,65 @@
+<body class="game-page">
+    <button class="nav-button nav-button-left" color="primary" (click)="navBack()">{{ 'common.back' | translate }}</button>
+    <h2>{{ 'gameCreation.title' | translate }}</h2>
+    <button class="nav-button nav-button-right" [disabled]="!selectedMap" (click)="navCreateGame()">
+        {{ 'gameCreation.nextButton' | translate }}
+    </button>
+
+    <div class="error-container">
+        @if (message !== '') {
+        <p>{{ message }}</p>
+        }
+    </div>
+
+    <div class="wrapper">
+        <div class="entry-fee-bar">
+            <label for="entryFee">{{ 'gameCreation.entryFeeLabel' | translate }}</label>
+            <input
+                id="entryFee"
+                type="number"
+                min="0"
+                max="100"
+                [(ngModel)]="entryFee"
+                [placeholder]="'gameCreation.entryFeePlaceholder' | translate"
+            />
+            <span class="fee-hint"
+                >@if (entryFee > 0) { {{ 'gameCreation.entryFeeCharged' | translate: { entryFee: entryFee } }} } @else {
+                {{ 'gameCreation.entryFeeFree' | translate }} }</span
+            >
+        </div>
+        <label class="entry-fee-bar toggle-row" for="friendsOnly">
+            <div class="toggle-copy">
+                <span class="toggle-title">{{ 'gameCreation.friendsOnlyLabel' | translate }}</span>
+                <span class="fee-hint"
+                    >@if (friendsOnly) { {{ 'gameCreation.friendsOnlyOn' | translate }} } @else {
+                    {{ 'gameCreation.friendsOnlyOff' | translate }} }</span
+                >
+            </div>
+
+            <div class="toggle-control" [class.is-active]="friendsOnly">
+                <input id="friendsOnly" type="checkbox" [(ngModel)]="friendsOnly" />
+                <span class="toggle-track">
+                    <span class="toggle-thumb"></span>
+                </span>
+            </div>
+        </label>
+        <div class="maps-grid">
+            @if (visibleMaps$ | async; as maps) { @for (map of maps; track map._id) {
+            <app-map-card
+                class="game-card"
+                [showActions]="false"
+                [map]="map"
+                (click)="onSelectGame(map)"
+                [class.selected]="map._id === selectedMap?._id"
+            >
+            </app-map-card>
+            } }
+        </div>
+    </div>
+
+    @if (isCharacterFormVisible) {
+    <div class="overlay">
+        <app-character-form (closeForm)="onFormClosed()" (characterCreated)="createGame()"></app-character-form>
+    </div>
+    }
+</body>

@@ -1,0 +1,173 @@
+<div class="toolbar-container">
+    <div class="toolbar">
+        <button
+            class="toolbar-button"
+            (click)="toggleSecondaryToolbar('tiles')"
+            (mouseenter)="showToolDescription('tiles')"
+            (mouseleave)="hideToolDescription()"
+        >
+            <img src="./assets/icons/GenTiles.png" alt="Tiles" />
+            @if (hoveredTool === 'tiles') {
+            <div class="tooltip">{{ 'toolbar.tiles' | translate }}</div>
+            }
+        </button>
+        <button
+            class="toolbar-button"
+            (click)="toggleSecondaryToolbar('items')"
+            (mouseenter)="showToolDescription('items')"
+            (mouseleave)="hideToolDescription()"
+        >
+            <img src="./assets/icons/GenItems.png" alt="Items" />
+            @if (hoveredTool === 'items') {
+            <div class="tooltip">{{ 'toolbar.items' | translate }}</div>
+            }
+        </button>
+        <button
+            class="toolbar-button"
+            data-item="checkpoint"
+            (mouseenter)="showToolDescription('checkpoint')"
+            (mouseleave)="hideToolDescription()"
+            [class.disabled]="gridService.checkpointsRemaining() === 0"
+            (dragstart)="onItemDragStart($event, 'checkpoint')"
+            (dragover)="onToolbarDragOver($event)"
+            (drop)="onToolbarDrop($event)"
+        >
+            <img src="./assets/icons/checkpoints.png" alt="Starting points" />
+            <span class="count">{{ gridService.checkpointsRemaining() }}</span>
+            @if (hoveredTool === 'checkpoint') {
+            <div class="tooltip">{{ 'toolbar.startingPoints' | translate }}</div>
+            }
+        </button>
+
+        <div class="toolbar-separator"></div>
+
+        <button
+            class="toolbar-button"
+            (click)="gridService.clearGrid()"
+            (mouseenter)="showToolDescription('reset')"
+            (mouseleave)="hideToolDescription()"
+        >
+            <img src="./assets/icons/reset.png" alt="Reset" />
+            @if (hoveredTool === 'reset') {
+            <div class="tooltip">{{ 'toolbar.reset' | translate }}</div>
+            }
+        </button>
+        <button
+            class="toolbar-button generate-button"
+            (click)="onGenerate()"
+            (mouseenter)="showToolDescription('generate')"
+            (mouseleave)="hideToolDescription()"
+        >
+            <img class="generate-icon" src="./assets/icons/mapgen.png" alt="Reset" />
+            @if (hoveredTool === 'generate') {
+            <div class="tooltip">{{ 'toolbar.autoGenerate' | translate }}</div>
+            }
+        </button>
+
+        <div class="toolbar-separator"></div>
+
+        <button class="toolbar-button" (click)="onSave()" (mouseenter)="showToolDescription('save')" (mouseleave)="hideToolDescription()">
+            <img src="./assets/icons/save.png" alt="Save" />
+            @if (hoveredTool === 'save') {
+            <div class="tooltip">{{ 'toolbar.save' | translate }}</div>
+            }
+        </button>
+        <button class="toolbar-button" (click)="onExit()" (mouseenter)="showToolDescription('exit')" (mouseleave)="hideToolDescription()">
+            <img src="./assets/icons/exit.png" alt="Exit" />
+            @if (hoveredTool === 'exit') {
+            <div class="tooltip">{{ 'toolbar.exit' | translate }}</div>
+            }
+        </button>
+
+        @if (isCTFMode()) {
+        <div class="toolbar-separator"></div>
+        <button
+            class="toolbar-button"
+            data-item="flag"
+            (mouseenter)="showToolDescription('flag')"
+            (mouseleave)="hideToolDescription()"
+            [class.disabled]="gridService.isItemPlaced('flag')"
+            (click)="setSelectedItem('flag')"
+            (dragstart)="onItemDragStart($event, 'flag')"
+            (dragover)="onToolbarDragOver($event)"
+            (drop)="onToolbarDrop($event)"
+        >
+            <img src="./assets/items/flag.png" alt="Flag" />
+            @if (hoveredTool === 'flag') {
+            <div class="tooltip">{{ 'items.' + 'flag' | translate }}</div>
+            }
+        </button>
+        }
+    </div>
+
+    @if (showSecondaryToolbar === 'tiles') {
+    <div class="secondary-toolbar">
+        @for (tile of getTileKeys(); track tile) { @if (tile !== 'grass' && tile !== 'doorClose' && tile !== 'doorOpen') {
+        <button
+            class="tile-option"
+            [class.selected]="gridService.selectedTile() === tile"
+            (click)="setSelectedTile(tile)"
+            (mouseenter)="showTileDescription(tile)"
+            (mouseleave)="hideTileDescription()"
+        >
+            <img [src]="tileSettings[tile].image" [alt]="tile" />
+            @if (hoveredTile === tile) {
+            <div class="tooltip">{{ 'tiles.' + tile | translate }}</div>
+            }
+        </button>
+        } }
+        <button
+            class="tile-option"
+            [class.selected]="gridService.selectedTile() === 'doorClose'"
+            (click)="setSelectedTile('doorClose')"
+            (mouseenter)="showTileDescription('doorClose')"
+            (mouseleave)="hideTileDescription()"
+        >
+            <img [src]="tileSettings['doorClose'].image" alt="door" />
+            @if (hoveredTile === 'doorClose') {
+            <div class="tooltip">{{ 'tiles.doorClose' | translate }}</div>
+            }
+        </button>
+    </div>
+    } @if (showSecondaryToolbar === 'items') {
+    <div class="secondary-toolbar">
+        @for (item of getItemKeys(); track item) { @if (item !== 'random') {
+        <button
+            class="item-option"
+            [attr.data-item]="item"
+            [class.selected]="gridService.selectedItem() === item"
+            [class.disabled]="gridService.isItemPlaced(item)"
+            (click)="setSelectedItem(item)"
+            (mouseenter)="showItemDescription(item)"
+            (mouseleave)="hideItemDescription()"
+            (dragstart)="onItemDragStart($event, item)"
+            (dragover)="onToolbarDragOver($event)"
+            (drop)="onToolbarDrop($event)"
+        >
+            <img [src]="itemSettings[item].image" [alt]="item" />
+            @if (hoveredItem === item) {
+            <div class="tooltip">{{ 'items.' + item | translate }}</div>
+            }
+        </button>
+        } }
+        <button
+            class="item-option"
+            data-item="random"
+            [class.selected]="gridService.selectedItem() === 'random'"
+            [class.disabled]="gridService.randomItemsRemaining() === 0"
+            (click)="setSelectedItem('random')"
+            (mouseenter)="showItemDescription('random')"
+            (mouseleave)="hideItemDescription()"
+            (dragstart)="onItemDragStart($event, 'random')"
+            (dragover)="onToolbarDragOver($event)"
+            (drop)="onToolbarDrop($event)"
+        >
+            <img [src]="itemSettings['random'].image" [alt]="'random'" />
+            <span class="count">{{ gridService.randomItemsRemaining() }}</span>
+            @if (hoveredItem === 'random') {
+            <div class="tooltip">{{ 'items.random' | translate }}</div>
+            }
+        </button>
+    </div>
+    }
+</div>

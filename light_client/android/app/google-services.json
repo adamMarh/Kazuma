@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "314257484947",
+    "project_id": "kazuma-691eb",
+    "storage_bucket": "kazuma-691eb.firebasestorage.app"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:314257484947:android:55d28cfaa649e20e997166",
+        "android_client_info": {
+          "package_name": "com.example.light_client"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDxvau6OXnqsIbObYQOLYIuU2zfGb9RkmI"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
